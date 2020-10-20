@@ -1,0 +1,16 @@
+{{> header}}
+
+<h1>{{title}}</h1>
+
+<div class="products">
+
+  {{#products}}
+    <section>
+      <header class="product-header">
+        <h2 class="product-title"><a href="/products/{{id}}">{{name}}</a></h2>
+      </header>
+    </section>
+  {{/products}}
+</div>
+
+{{> footer}}
