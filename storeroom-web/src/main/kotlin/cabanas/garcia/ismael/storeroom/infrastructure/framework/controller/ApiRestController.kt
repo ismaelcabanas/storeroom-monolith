@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller
 
-import cabanas.garcia.ismael.storeroom.domain.ProductRepository
+import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

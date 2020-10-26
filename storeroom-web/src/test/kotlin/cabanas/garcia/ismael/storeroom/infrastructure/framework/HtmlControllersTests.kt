@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework
 
-import cabanas.garcia.ismael.storeroom.domain.ProductRepository
+import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
@@ -44,7 +44,7 @@ class HtmlControllersTests(
     fun `Assert product page title, content and status code`() {
         val productId = UUID.randomUUID()
         val productName = "Lata de maíz"
-        productRepository.save(Product(productId, productName))
+        //productRepository.save(Product(productId, productName))
 
         val entity = restTemplate.getForEntity<String>("/products/${productId}")
 
