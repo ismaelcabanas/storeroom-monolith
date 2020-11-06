@@ -7,4 +7,5 @@ class TestContext() {
     lateinit var requestedProductDetails: ProductDetails
     lateinit var userId: String
     lateinit var createdProduct: Product
+    var error: Exception? = null
 }

@@ -15,12 +15,12 @@ class InMemoryProductRepository(private val products: MutableMap<ProductId, Prod
         TODO("Not yet implemented")
     }
 
-    override fun fetch(id: ProductId): Product? {
-        return products[id]
-    }
-
     override fun save(product: Product): Product {
         products[product.id] = product
         return product
+    }
+
+    override fun findByName(productName: String): Product? {
+        return products.values.firstOrNull { product -> product.name == productName }
     }
 }

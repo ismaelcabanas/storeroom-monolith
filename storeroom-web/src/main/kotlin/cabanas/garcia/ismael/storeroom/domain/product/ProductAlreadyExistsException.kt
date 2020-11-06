@@ -1,3 +1,6 @@
 package cabanas.garcia.ismael.storeroom.domain.product
 
-class ProductAlreadyExistsException(productId: ProductId) : RuntimeException("A product already exists for the id $productId")
+import java.lang.RuntimeException
+
+class ProductAlreadyExistsException(productName: String) : RuntimeException("A product already exists with name $productName") {
+}

@@ -5,7 +5,16 @@ import cabanas.garcia.ismael.storeroom.domain.api.CreateProduct
 class ProductCreator(private val productRepository: ProductRepository) : CreateProduct {
 
     override fun byUserWithDetails(userId: UserId, productDetails: ProductDetails): Product {
-        productRepository.fetch(productDetails.id)?.let { throw ProductAlreadyExistsException(productDetails.id) }
-        return productRepository.save(Product(productDetails.id, userId, productDetails.name))
+        if (existProductWithName(productDetails.name)) {
+            throw ProductAlreadyExistsException(productDetails.name)
+        }
+
+        val product = Product(productDetails.id, userId, productDetails.name)
+
+        return productRepository.save(product)
+    }
+
+    private fun existProductWithName(productName: String): Boolean {
+        return productRepository.findByName(productName) != null
     }
 }

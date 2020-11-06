@@ -17,13 +17,14 @@ class JpaProductRepository(private val springJpaRepository: SpringJpaProductRepo
         TODO("Not yet implemented")
     }
 
-    override fun fetch(id: ProductId): cabanas.garcia.ismael.storeroom.domain.product.Product? {
-        TODO("Not yet implemented")
-    }
-
     override fun save(product: cabanas.garcia.ismael.storeroom.domain.product.Product): cabanas.garcia.ismael.storeroom.domain.product.Product {
         TODO("Not yet implemented")
     }
+
+    override fun findByName(productName: String): cabanas.garcia.ismael.storeroom.domain.product.Product? {
+        TODO("Not yet implemented")
+    }
+
     /*
     override fun save(product: Product) {
         springJpaRepository.save(product)
