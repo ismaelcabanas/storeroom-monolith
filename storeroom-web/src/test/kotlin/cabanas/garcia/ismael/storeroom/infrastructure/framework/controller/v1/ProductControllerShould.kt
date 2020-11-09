@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.v1
 
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.configuration.DomainConfiguration
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.configuration.InfrastructureConfiguration
+import cabanas.garcia.ismael.storeroom.stubs.StubsConfiguration
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(value = [ProductController::class])
-@Import(value = [DomainConfiguration::class, InfrastructureConfiguration::class])
+@Import(value = [DomainConfiguration::class, StubsConfiguration::class])
 @ActiveProfiles("stubs", "test")
 internal class ProductControllerShould {
 
