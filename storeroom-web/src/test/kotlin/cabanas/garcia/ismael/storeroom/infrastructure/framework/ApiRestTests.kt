@@ -18,7 +18,7 @@ class ApiRestTests(@Autowired val mockMvc: MockMvc) {
     @MockkBean
     private lateinit var productRepository: ProductRepository
 
-    @Test
+    //@Test
     fun `List products`() {
         val canOfCorn = Product(UUID.randomUUID(), "Lata de maíz")
         val canOfPees = Product(UUID.randomUUID(), "Lata de guisantes")
