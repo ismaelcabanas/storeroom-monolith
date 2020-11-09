@@ -1,8 +1,8 @@
 package cabanas.garcia.ismael.storeroom.domain.product
 
-class Product(id: ProductId, userId: UserId, name: String) {
+class Product(id: ProductId, creatorId: UserId, name: String) {
     val id: ProductId = id
-    val userId: UserId = userId
+    val creatorId: UserId = creatorId
     val name: String = name
 
     override fun equals(other: Any?): Boolean {
@@ -12,7 +12,7 @@ class Product(id: ProductId, userId: UserId, name: String) {
         other as Product
 
         if (id != other.id) return false
-        if (userId != other.userId) return false
+        if (creatorId != other.creatorId) return false
         if (name != other.name) return false
 
         return true
@@ -20,13 +20,13 @@ class Product(id: ProductId, userId: UserId, name: String) {
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + userId.hashCode()
+        result = 31 * result + creatorId.hashCode()
         result = 31 * result + name.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "Product(id=$id, userId=$userId, name='$name')"
+        return "Product(id=$id, creatorId=$creatorId, name='$name')"
     }
 
 

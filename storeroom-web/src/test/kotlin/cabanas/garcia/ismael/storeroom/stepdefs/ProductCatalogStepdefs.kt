@@ -53,7 +53,7 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
         val product = testContext.createdProduct
         val adminUser = testContext.userId
 
-        product.that `corresponds to user` adminUser
+        product.that `corresponds to creator` adminUser
         product.that `has name` product.name
     }
 

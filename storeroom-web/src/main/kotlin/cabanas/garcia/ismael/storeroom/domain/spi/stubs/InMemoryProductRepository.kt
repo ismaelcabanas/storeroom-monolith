@@ -5,7 +5,7 @@ import cabanas.garcia.ismael.storeroom.domain.product.ProductId
 import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
 import java.util.*
 
-class InMemoryProductRepository(private val products: MutableMap<ProductId, Product> = HashMap()): ProductRepository {
+class InMemoryProductRepository(val products: MutableMap<ProductId, Product> = HashMap()): ProductRepository {
 
     override fun findById(id: UUID): Product? {
         TODO("Not yet implemented")
