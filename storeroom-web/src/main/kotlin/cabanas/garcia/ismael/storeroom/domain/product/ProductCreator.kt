@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom.domain.product
 
-import cabanas.garcia.ismael.storeroom.domain.api.CreateProduct
+import cabanas.garcia.ismael.storeroom.domain.product.api.CreateProduct
 
 class ProductCreator(private val productRepository: ProductRepository) : CreateProduct {
 

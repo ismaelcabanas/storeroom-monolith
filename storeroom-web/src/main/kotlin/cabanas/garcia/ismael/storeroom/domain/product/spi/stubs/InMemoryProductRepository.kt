@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.domain.spi.stubs
+package cabanas.garcia.ismael.storeroom.domain.product.spi.stubs
 
 import cabanas.garcia.ismael.storeroom.domain.product.Product
 import cabanas.garcia.ismael.storeroom.domain.product.ProductId

@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.domain.product
 
 import cabanas.garcia.ismael.storeroom.assertions.that
-import cabanas.garcia.ismael.storeroom.domain.spi.stubs.InMemoryProductRepository
+import cabanas.garcia.ismael.storeroom.domain.product.spi.stubs.InMemoryProductRepository
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach

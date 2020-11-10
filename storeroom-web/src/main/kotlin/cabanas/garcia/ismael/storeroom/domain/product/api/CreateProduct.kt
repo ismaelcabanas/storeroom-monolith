@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.domain.api
+package cabanas.garcia.ismael.storeroom.domain.product.api
 
 import cabanas.garcia.ismael.storeroom.domain.product.Product
 import cabanas.garcia.ismael.storeroom.domain.product.ProductDetails

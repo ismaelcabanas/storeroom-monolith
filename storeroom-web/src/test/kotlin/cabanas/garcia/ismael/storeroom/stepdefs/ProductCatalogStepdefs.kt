@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.stepdefs
 
 import cabanas.garcia.ismael.storeroom.assertions.that
-import cabanas.garcia.ismael.storeroom.domain.api.CreateProduct
+import cabanas.garcia.ismael.storeroom.domain.product.api.CreateProduct
 import cabanas.garcia.ismael.storeroom.domain.product.ProductAlreadyExistsException
 import cabanas.garcia.ismael.storeroom.domain.product.ProductDetails
 import cabanas.garcia.ismael.storeroom.domain.product.ProductId
