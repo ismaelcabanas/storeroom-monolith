@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.storeroom.stepdefs
 
+import cabanas.garcia.ismael.storeroom.application.ApplicationError
 import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommand
 import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommandHandler
 import cabanas.garcia.ismael.storeroom.assertions.that
@@ -64,7 +65,7 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
     fun `the product already exist`() {
         assertThat(testContext.error)
                 .isNotNull()
-                .isInstanceOf(ProductAlreadyExistsException::class.java)
+                .isInstanceOf(ApplicationError::class.java)
                 .hasMessage(String.format("A product already exists with name %s", testContext.createProductCommand.productName))
     }
 
