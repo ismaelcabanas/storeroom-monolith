@@ -2,7 +2,7 @@ package cabanas.garcia.ismael.storeroom.application.product.createproduct
 
 import cabanas.garcia.ismael.storeroom.application.ApplicationError
 import cabanas.garcia.ismael.storeroom.application.CommandHandler
-import cabanas.garcia.ismael.storeroom.domain.product.ProductAlreadyExistsException
+import cabanas.garcia.ismael.storeroom.domain.product.ProductNameAlreadyExistsException
 import cabanas.garcia.ismael.storeroom.domain.product.ProductDetails
 import cabanas.garcia.ismael.storeroom.domain.product.ProductId
 import cabanas.garcia.ismael.storeroom.domain.product.UserId
@@ -12,7 +12,7 @@ class CreateProductCommandHandler(private val createProduct: CreateProduct): Com
     override fun handle(command: CreateProductCommand) {
         try {
             createProduct.byUserWithDetails(UserId(command.creatorId), ProductDetails(ProductId(command.productId), command.productName))
-        } catch (e: ProductAlreadyExistsException) {
+        } catch (e: ProductNameAlreadyExistsException) {
             throw ApplicationError(e.message, e)
         }
     }

@@ -6,7 +6,7 @@ class ProductCreator(private val productRepository: ProductRepository) : CreateP
 
     override fun byUserWithDetails(userId: UserId, productDetails: ProductDetails): Product {
         if (existProductWithName(productDetails.name)) {
-            throw ProductAlreadyExistsException(productDetails.name)
+            throw ProductNameAlreadyExistsException(productDetails.name)
         }
 
         val product = Product(productDetails.id, userId, productDetails.name)

@@ -4,7 +4,6 @@ import cabanas.garcia.ismael.storeroom.application.ApplicationError
 import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommand
 import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommandHandler
 import cabanas.garcia.ismael.storeroom.assertions.that
-import cabanas.garcia.ismael.storeroom.domain.product.ProductAlreadyExistsException
 import cabanas.garcia.ismael.storeroom.domain.product.ProductDetails
 import cabanas.garcia.ismael.storeroom.domain.product.ProductId
 import cabanas.garcia.ismael.storeroom.domain.product.spi.stubs.InMemoryProductRepository
