@@ -1,1 +1,2 @@
-cabanas.garcia.ismael.storeroom.PicoDependencyInjector
+cabanas.garcia.ismael.storeroom.di.ProductCatalogPicoDependencyInjector
+cabanas.garcia.ismael.storeroom.di.StoreroomPicoDependencyInjector

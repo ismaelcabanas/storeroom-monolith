@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.storeroom
 
+import cabanas.garcia.ismael.storeroom.di.ProductCatalogPicoDependencyInjector
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import org.junit.runner.RunWith
@@ -9,6 +10,6 @@ import org.junit.runner.RunWith
         strict = true,
         plugin = ["pretty", "json:build/reports/tests/cucumber/product.json"],
         features = ["classpath:features/add-product-to-catalog.feature"],
-        objectFactory = PicoDependencyInjector::class)
+        objectFactory = ProductCatalogPicoDependencyInjector::class)
 class ProductCatalogFunctionalTests {
 }

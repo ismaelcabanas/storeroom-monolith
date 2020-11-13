@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom
+package cabanas.garcia.ismael.storeroom.di
 
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommandHandler
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductCreator
@@ -6,7 +6,7 @@ import cabanas.garcia.ismael.storeroom.domain.productcatalog.spi.stubs.InMemoryP
 import io.cucumber.core.backend.ObjectFactory
 import io.cucumber.picocontainer.PicoFactory
 
-class PicoDependencyInjector : ObjectFactory {
+class ProductCatalogPicoDependencyInjector : ObjectFactory {
 
     private val delegate: PicoFactory = PicoFactory()
 
