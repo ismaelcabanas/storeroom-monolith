@@ -1,9 +1,8 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework
 
-import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
 import com.ninjasquad.springmockk.MockkBean
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
@@ -11,7 +10,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import java.util.*
-import io.mockk.every
 
 @WebMvcTest
 class ApiRestTests(@Autowired val mockMvc: MockMvc) {

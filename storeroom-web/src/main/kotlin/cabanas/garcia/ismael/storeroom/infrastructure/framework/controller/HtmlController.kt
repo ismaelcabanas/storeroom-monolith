@@ -1,15 +1,12 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller
 
-import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.server.ResponseStatusException
-import java.util.*
 
 @Controller
 class HtmlController(private val repository: ProductRepository) {

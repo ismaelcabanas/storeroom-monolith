@@ -1,8 +1,8 @@
 package cabanas.garcia.ismael.storeroom
 
-import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommandHandler
-import cabanas.garcia.ismael.storeroom.domain.product.ProductCreator
-import cabanas.garcia.ismael.storeroom.domain.product.spi.stubs.InMemoryProductRepository
+import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommandHandler
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductCreator
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.spi.stubs.InMemoryProductRepository
 import io.cucumber.core.backend.ObjectFactory
 import io.cucumber.picocontainer.PicoFactory
 

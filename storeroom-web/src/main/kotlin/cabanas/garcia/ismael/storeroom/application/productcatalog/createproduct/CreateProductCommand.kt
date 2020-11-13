@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.application.product.createproduct
+package cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct
 
 import cabanas.garcia.ismael.storeroom.application.Command
 

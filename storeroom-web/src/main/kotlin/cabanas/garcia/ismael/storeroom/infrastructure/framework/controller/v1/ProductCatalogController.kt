@@ -1,9 +1,9 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.v1
 
-import cabanas.garcia.ismael.storeroom.domain.product.api.CreateProduct
-import cabanas.garcia.ismael.storeroom.domain.product.ProductDetails
-import cabanas.garcia.ismael.storeroom.domain.product.ProductId
-import cabanas.garcia.ismael.storeroom.domain.product.UserId
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.api.CreateProduct
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductDetails
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductId
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.UserId
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.v1.request.CreateProductRequest
 import org.springframework.http.ResponseEntity
 
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 
 @RestController
 @RequestMapping(path = ["/v1/products"])
-class ProductController(private val createProduct: CreateProduct) {
+class ProductCatalogController(private val createProduct: CreateProduct) {
 
     @PostMapping
     fun createProduct(

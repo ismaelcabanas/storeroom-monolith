@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.domain.product
+package cabanas.garcia.ismael.storeroom.domain.productcatalog
 
 class Product(id: ProductId, creatorId: UserId, name: String) {
     val id: ProductId = id

@@ -1,11 +1,9 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.configuration
 
-import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.util.*
 
 @Configuration
 class StoreroomConfiguration {

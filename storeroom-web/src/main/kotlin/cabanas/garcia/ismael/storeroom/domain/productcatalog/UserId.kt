@@ -1,13 +1,13 @@
-package cabanas.garcia.ismael.storeroom.domain.product
+package cabanas.garcia.ismael.storeroom.domain.productcatalog
 
-class ProductId(id: String) {
+class UserId(id: String) {
     val id: String = id
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as ProductId
+        other as UserId
 
         if (id != other.id) return false
 
@@ -19,7 +19,7 @@ class ProductId(id: String) {
     }
 
     override fun toString(): String {
-        return "ProductId(id='$id')"
+        return "UserId(id='$id')"
     }
 
 

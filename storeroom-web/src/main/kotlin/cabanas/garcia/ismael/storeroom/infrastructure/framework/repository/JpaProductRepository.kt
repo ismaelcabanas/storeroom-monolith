@@ -1,21 +1,21 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.repository
 
-import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 
 class JpaProductRepository(private val springJpaRepository: SpringJpaProductRepository): ProductRepository {
-    override fun findById(id: String): cabanas.garcia.ismael.storeroom.domain.product.Product? {
+    override fun findById(id: String): cabanas.garcia.ismael.storeroom.domain.productcatalog.Product? {
         TODO("Not yet implemented")
     }
 
-    override fun findAll(): List<cabanas.garcia.ismael.storeroom.domain.product.Product> {
+    override fun findAll(): List<cabanas.garcia.ismael.storeroom.domain.productcatalog.Product> {
         TODO("Not yet implemented")
     }
 
-    override fun save(product: cabanas.garcia.ismael.storeroom.domain.product.Product): cabanas.garcia.ismael.storeroom.domain.product.Product {
+    override fun save(product: cabanas.garcia.ismael.storeroom.domain.productcatalog.Product): cabanas.garcia.ismael.storeroom.domain.productcatalog.Product {
         TODO("Not yet implemented")
     }
 
-    override fun findByName(productName: String): cabanas.garcia.ismael.storeroom.domain.product.Product? {
+    override fun findByName(productName: String): cabanas.garcia.ismael.storeroom.domain.productcatalog.Product? {
         TODO("Not yet implemented")
     }
 

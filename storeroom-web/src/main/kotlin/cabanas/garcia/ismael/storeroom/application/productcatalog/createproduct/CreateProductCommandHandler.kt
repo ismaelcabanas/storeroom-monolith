@@ -1,12 +1,12 @@
-package cabanas.garcia.ismael.storeroom.application.product.createproduct
+package cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct
 
 import cabanas.garcia.ismael.storeroom.application.ApplicationError
 import cabanas.garcia.ismael.storeroom.application.CommandHandler
-import cabanas.garcia.ismael.storeroom.domain.product.ProductNameAlreadyExistsException
-import cabanas.garcia.ismael.storeroom.domain.product.ProductDetails
-import cabanas.garcia.ismael.storeroom.domain.product.ProductId
-import cabanas.garcia.ismael.storeroom.domain.product.UserId
-import cabanas.garcia.ismael.storeroom.domain.product.api.CreateProduct
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductNameAlreadyExistsException
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductDetails
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductId
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.UserId
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.api.CreateProduct
 
 class CreateProductCommandHandler(private val createProduct: CreateProduct): CommandHandler<CreateProductCommand> {
     override fun handle(command: CreateProductCommand) {

@@ -17,10 +17,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @ExtendWith(SpringExtension::class)
-@WebMvcTest(value = [ProductController::class])
+@WebMvcTest(value = [ProductCatalogController::class])
 @Import(value = [DomainConfiguration::class, StubsConfiguration::class])
 @ActiveProfiles("stubs", "test")
-internal class ProductControllerShould {
+internal class ProductCatalogControllerShould {
 
     @Autowired
     private lateinit var mvc: MockMvc

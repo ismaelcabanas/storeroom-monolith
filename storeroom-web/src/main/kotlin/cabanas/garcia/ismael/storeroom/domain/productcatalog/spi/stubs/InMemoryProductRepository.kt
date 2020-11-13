@@ -1,9 +1,8 @@
-package cabanas.garcia.ismael.storeroom.domain.product.spi.stubs
+package cabanas.garcia.ismael.storeroom.domain.productcatalog.spi.stubs
 
-import cabanas.garcia.ismael.storeroom.domain.product.Product
-import cabanas.garcia.ismael.storeroom.domain.product.ProductId
-import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
-import java.util.*
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.Product
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductId
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryProductRepository(val products: MutableMap<ProductId, Product> = ConcurrentHashMap()): ProductRepository {

@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.assertions
 
-import cabanas.garcia.ismael.storeroom.domain.product.Product
-import cabanas.garcia.ismael.storeroom.domain.product.UserId
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.Product
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.UserId
 import org.assertj.core.api.AbstractAssert
 
 class ProductAssert(actual: Product) : AbstractAssert<ProductAssert, Product>(actual, ProductAssert::class.java) {

@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.domain.product
+package cabanas.garcia.ismael.storeroom.domain.productcatalog
 
 interface ProductRepository {
     fun findById(id: String): Product?

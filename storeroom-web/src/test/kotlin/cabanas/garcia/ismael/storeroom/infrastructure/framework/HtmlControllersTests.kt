@@ -1,11 +1,9 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework
 
-import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate

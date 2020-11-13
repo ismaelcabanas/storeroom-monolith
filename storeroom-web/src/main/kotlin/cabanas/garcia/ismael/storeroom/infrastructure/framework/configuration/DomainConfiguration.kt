@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.configuration
 
-import cabanas.garcia.ismael.storeroom.domain.product.ProductCreator
-import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductCreator
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
