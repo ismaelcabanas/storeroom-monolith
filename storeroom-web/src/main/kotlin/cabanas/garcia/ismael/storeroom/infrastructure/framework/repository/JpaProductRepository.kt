@@ -1,15 +1,9 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.repository
 
-import cabanas.garcia.ismael.storeroom.domain.product.ProductId
 import cabanas.garcia.ismael.storeroom.domain.product.ProductRepository
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
-import org.springframework.data.repository.findByIdOrNull
-import java.util.UUID
-import java.util.stream.Collectors
-import java.util.stream.StreamSupport
 
 class JpaProductRepository(private val springJpaRepository: SpringJpaProductRepository): ProductRepository {
-    override fun findById(id: UUID): cabanas.garcia.ismael.storeroom.domain.product.Product? {
+    override fun findById(id: String): cabanas.garcia.ismael.storeroom.domain.product.Product? {
         TODO("Not yet implemented")
     }
 

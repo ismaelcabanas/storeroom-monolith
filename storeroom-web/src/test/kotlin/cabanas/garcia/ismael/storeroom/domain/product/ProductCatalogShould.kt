@@ -1,5 +1,7 @@
 package cabanas.garcia.ismael.storeroom.domain.product
 
+import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommand
+import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommandHandler
 import cabanas.garcia.ismael.storeroom.assertions.that
 import cabanas.garcia.ismael.storeroom.domain.product.spi.stubs.InMemoryProductRepository
 import org.assertj.core.api.Assertions
@@ -19,23 +21,22 @@ internal class ProductCatalogShould {
 
     @Test
     fun `add new product to catalog`() {
-        val sut = ProductCreator(productRepository)
-        val userId = UserId("some id")
-        val productDetails = ProductDetails(ProductId("some product Id"), "Botella de leche")
+        val productCreator = ProductCreator(productRepository)
+        val sut = CreateProductCommandHandler(productCreator)
 
-        sut.byUserWithDetails(userId, productDetails)
+        sut.handle(command = CreateProductCommand("some product Id", "some id", "Botella de leche"))
 
         assertThatProductIsSaved("some id", "some product Id", "Botella de leche")
     }
 
     @Test
     fun `throw already product exist exception when add a product with the same name`() {
-        val sut = ProductCreator(productRepository)
-        val userId = UserId("some id")
-        val productDetails = ProductDetails(ProductId("some product Id"), "Botella de leche")
-        sut.byUserWithDetails(userId, productDetails)
+        val productCreator = ProductCreator(productRepository)
+        val sut = CreateProductCommandHandler(productCreator)
+        val command = CreateProductCommand("some product Id", "some id", "Botella de leche")
+        sut.handle(command)
 
-        val throwable = Assertions.catchThrowable { sut.byUserWithDetails(userId, productDetails) }
+        val throwable = Assertions.catchThrowable { sut.handle(command) }
 
         assertThat(throwable).isInstanceOf(ProductAlreadyExistsException::class.java)
     }

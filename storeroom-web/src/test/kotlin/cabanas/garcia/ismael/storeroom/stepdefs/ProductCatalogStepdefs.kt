@@ -1,20 +1,23 @@
 package cabanas.garcia.ismael.storeroom.stepdefs
 
+import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommand
+import cabanas.garcia.ismael.storeroom.application.product.createproduct.CreateProductCommandHandler
 import cabanas.garcia.ismael.storeroom.assertions.that
-import cabanas.garcia.ismael.storeroom.domain.product.api.CreateProduct
 import cabanas.garcia.ismael.storeroom.domain.product.ProductAlreadyExistsException
 import cabanas.garcia.ismael.storeroom.domain.product.ProductDetails
 import cabanas.garcia.ismael.storeroom.domain.product.ProductId
-import cabanas.garcia.ismael.storeroom.domain.product.UserId
+import cabanas.garcia.ismael.storeroom.domain.product.spi.stubs.InMemoryProductRepository
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import org.assertj.core.api.Assertions.assertThat
 import java.util.*
+import kotlin.test.assertNotNull
 
 class ProductCatalogStepdefs(private val testContext: TestContext,
-                             private val createProduct: CreateProduct) {
+                             private val inMemoryProductRepository: InMemoryProductRepository,
+                             private val createProduct: CreateProductCommandHandler) {
 
     @Given("^a admin user$")
     fun `a admin user`() {
@@ -24,9 +27,8 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
     @And("^he wants the product (.+)$")
     fun `he wants products`(productName : String) {
         val productId = UUID.randomUUID().toString()
-        val productDetails = ProductDetails(ProductId(productId), productName)
 
-        testContext.requestedProductDetails = productDetails
+        testContext.createProductCommand = CreateProductCommand(productId, testContext.userId, productName)
     }
 
     @And("^he added the product (.+)$")
@@ -34,7 +36,7 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
         val productId = UUID.randomUUID().toString()
         val productDetails = ProductDetails(ProductId(productId), productName)
 
-        testContext.requestedProductDetails = productDetails
+        testContext.createProductCommand = CreateProductCommand(productId, testContext.userId, productName)
 
         `he adds this product to catalog`()
     }
@@ -42,7 +44,7 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
     @When("^he adds this product to catalog$")
     fun `he adds this product to catalog`() {
         try {
-            testContext.createdProduct = createProduct.byUserWithDetails(UserId(testContext.userId), testContext.requestedProductDetails)
+            createProduct.handle(testContext.createProductCommand)
         } catch (e: Exception) {
             testContext.error = e
         }
@@ -50,9 +52,10 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
 
     @Then("^the product is stored within$")
     fun `the product is stored within`() {
-        val product = testContext.createdProduct
+        val product = inMemoryProductRepository.findById(testContext.createProductCommand.productId)
         val adminUser = testContext.userId
 
+        assertNotNull(product, "Product should be stored")
         product.that `corresponds to creator` adminUser
         product.that `has name` product.name
     }
@@ -62,7 +65,7 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
         assertThat(testContext.error)
                 .isNotNull()
                 .isInstanceOf(ProductAlreadyExistsException::class.java)
-                .hasMessage(String.format("A product already exists with name %s", testContext.requestedProductDetails.name))
+                .hasMessage(String.format("A product already exists with name %s", testContext.createProductCommand.productName))
     }
 
 
