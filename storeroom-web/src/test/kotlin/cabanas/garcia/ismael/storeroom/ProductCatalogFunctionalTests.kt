@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 @CucumberOptions(
         strict = true,
         plugin = ["pretty", "json:build/reports/tests/cucumber/product.json"],
-        features = ["classpath:features/adding-product-to-catalog.feature"],
+        features = ["classpath:features/add-product-to-catalog.feature"],
         objectFactory = PicoDependencyInjector::class)
 class ProductCatalogFunctionalTests {
 }
