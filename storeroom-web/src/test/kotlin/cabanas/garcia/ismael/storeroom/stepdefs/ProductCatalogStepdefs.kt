@@ -34,7 +34,6 @@ class ProductCatalogStepdefs(private val testContext: TestContext,
     @And("^he added the product (.+)$")
     fun `he added products`(productName : String) {
         val productId = UUID.randomUUID().toString()
-        val productDetails = ProductDetails(ProductId(productId), productName)
 
         testContext.createProductCommand = CreateProductCommand(productId, testContext.userId, productName)
 

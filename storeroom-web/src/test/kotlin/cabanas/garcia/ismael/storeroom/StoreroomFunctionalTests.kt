@@ -9,8 +9,7 @@ import org.junit.runner.RunWith
 @CucumberOptions(
         strict = true,
         plugin = ["pretty", "json:build/reports/tests/cucumber/storeroom.json"],
-        features = ["classpath:features/storeroom/create-storeroom.feature",
-            "classpath:features/storeroom/add-product-to-storeroom.feature"],
+        features = ["classpath:features/storeroom/create-storeroom.feature"],
         objectFactory = StoreroomPicoDependencyInjector::class)
 class StoreroomFunctionalTests {
 }
