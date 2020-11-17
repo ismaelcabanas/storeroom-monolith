@@ -22,7 +22,7 @@ class Storeroom internal constructor(
         val product = productOf(ProductId(productId))
 
         return if (product == null) {
-            Storeroom(id, this.ownerId, name, addProduct(Product(ProductId(productId), quantity)))
+            Storeroom(id, this.ownerId, name, addProduct(Product(ProductId(productId), Stock(quantity))))
         } else {
             Storeroom(id, this.ownerId, name, addProduct(product.addStock(quantity)))
         }
@@ -39,7 +39,7 @@ class Storeroom internal constructor(
     fun stockOf(productId: String): Int {
         val product = productOf(ProductId(productId))
 
-        return product?.stock ?: ZERO_STOCK
+        return product?.stock() ?: ZERO_STOCK
     }
 
     private fun productOf(productId: ProductId): Product? {

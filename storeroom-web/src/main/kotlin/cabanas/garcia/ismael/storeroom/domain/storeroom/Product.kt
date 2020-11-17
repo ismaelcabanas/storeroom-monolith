@@ -1,9 +1,13 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
-class Product(val id: ProductId, val stock: Int) {
+class Product(val id: ProductId, val stock: Stock) {
 
     fun addStock(quantity: Int): Product {
-        return Product(id, stock + quantity)
+        return Product(id, stock.add(quantity))
+    }
+
+    fun stock(): Int {
+        return stock.value
     }
 
     override fun equals(other: Any?): Boolean {
@@ -20,11 +24,12 @@ class Product(val id: ProductId, val stock: Int) {
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + stock
+        result = 31 * result + stock.hashCode()
         return result
     }
 
     override fun toString(): String {
         return "Product(id=$id, stock=$stock)"
     }
+
 }
