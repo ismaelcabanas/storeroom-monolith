@@ -1,6 +1,5 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
