@@ -3,7 +3,15 @@ package cabanas.garcia.ismael.storeroom.domain.storeroom
 class Product(val id: ProductId, val stock: Stock) {
 
     fun addStock(quantity: Int): Product {
-        return Product(id, stock.add(quantity))
+        return Product(id, stock.increase(quantity))
+    }
+
+    fun consumeStock(quantity: Int): Product {
+        try {
+            return Product(id, stock.decrease(quantity))
+        } catch (e: NegativeStockException) {
+            throw ConsumeProductStockExceededException(id.value, stock(), quantity, e)
+        }
     }
 
     fun stock(): Int {

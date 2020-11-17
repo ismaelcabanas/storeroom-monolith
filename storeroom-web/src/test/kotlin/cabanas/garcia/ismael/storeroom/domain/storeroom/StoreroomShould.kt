@@ -1,6 +1,8 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -48,12 +50,44 @@ class StoreroomShould {
 
     @Test
     fun `add new stock to existent products to storeroom`() {
-        val sut = givenStoreroomWithProductWithStock(SOME_STOCK)
+        val sut = givenStoreroomWithProductWithStock(3)
         val newStock = 5
 
         val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, newStock)
 
         assertThat(actual.stockOf(SOME_PRODUCT_ID)).isEqualTo(8)
+    }
+
+    @Test
+    fun `consume stock from existent product in storeroom`() {
+        val sut = givenStoreroomWithProductWithStock(3)
+        val consumedStock = 2
+
+        val actual = sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
+
+        assertThat(actual.stockOf(SOME_PRODUCT_ID)).isEqualTo(1)
+    }
+
+    @Test
+    fun `throw product does not exist error when consume stock from product that does not exist in storeroom`() {
+        val sut = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_OWNER_ID), SOME_STOREROOM_NAME)
+        val consumedStock = 2
+
+        val throwable = catchThrowable { sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock) }
+
+        assertThat(throwable).isInstanceOf(ProductDoesNotExitsException::class.java)
+        assertThat(throwable.message).isEqualTo("Product '$SOME_PRODUCT_ID' is not in the storeroom")
+    }
+
+    @Test
+    fun `throw consume product exceeded error when product stock in storeroom is less than stock to consume`() {
+        val sut = givenStoreroomWithProductWithStock(3)
+        val consumedStock = 4
+
+        val throwable = catchThrowable { sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock) }
+
+        assertThat(throwable).isInstanceOf(ConsumeProductStockExceededException::class.java)
+        assertThat(throwable.message).isEqualTo("Product '$SOME_PRODUCT_ID' stock is 3 and you want consume 4 units of stock")
     }
 
     private fun givenStoreroomWithProductWithStock(stock: Int): Storeroom {

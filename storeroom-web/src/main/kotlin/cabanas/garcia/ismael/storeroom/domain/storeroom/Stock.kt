@@ -1,8 +1,19 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
 class Stock(val value: Int) {
-    fun add(quantity: Int): Stock {
+
+    init {
+        if (value < 0) {
+            throw NegativeStockException("The stock cannot be negative")
+        }
+    }
+
+    fun increase(quantity: Int): Stock {
         return Stock(value + quantity)
+    }
+
+    fun decrease(quantity: Int): Stock {
+        return Stock(value - quantity)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -23,6 +34,5 @@ class Stock(val value: Int) {
     override fun toString(): String {
         return "Stock(value=$value)"
     }
-
 
 }
