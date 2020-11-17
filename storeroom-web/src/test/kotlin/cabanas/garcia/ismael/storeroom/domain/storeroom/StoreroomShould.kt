@@ -31,7 +31,7 @@ class StoreroomShould {
 
     @Test
     fun `add new products to storeroom`() {
-        val sut = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_OWNER_ID), SOME_STOREROOM_NAME)
+        val sut = StoreroomMother.emptyStoreroom()
 
         val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID)
 
@@ -39,8 +39,8 @@ class StoreroomShould {
     }
 
     @Test
-    fun `add new products to storeroom with stock`() {
-        val sut = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_OWNER_ID), SOME_STOREROOM_NAME)
+    fun `add new products with stock to storeroom`() {
+        val sut = StoreroomMother.emptyStoreroom()
 
         val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, SOME_STOCK)
 
@@ -49,7 +49,7 @@ class StoreroomShould {
 
     @Test
     fun `add new stock to existent products to storeroom`() {
-        val sut = givenStoreroomWithProductWithStock(3)
+        val sut = StoreroomMother.createStoreroomWithProducts(listOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
         val newStock = 5
 
         val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, newStock)
@@ -59,7 +59,7 @@ class StoreroomShould {
 
     @Test
     fun `consume stock from existent product in storeroom`() {
-        val sut = givenStoreroomWithProductWithStock(3)
+        val sut = StoreroomMother.createStoreroomWithProducts(listOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
         val consumedStock = 2
 
         val actual = sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
@@ -69,7 +69,7 @@ class StoreroomShould {
 
     @Test
     fun `throw product does not exist error when consume stock from product that does not exist in storeroom`() {
-        val sut = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_OWNER_ID), SOME_STOREROOM_NAME)
+        val sut = StoreroomMother.emptyStoreroom()
         val consumedStock = 2
 
         val throwable = catchThrowable { sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock) }
@@ -80,7 +80,7 @@ class StoreroomShould {
 
     @Test
     fun `throw consume product exceeded error when product stock in storeroom is less than stock to consume`() {
-        val sut = givenStoreroomWithProductWithStock(3)
+        val sut = StoreroomMother.createStoreroomWithProducts(listOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
         val consumedStock = 4
 
         val throwable = catchThrowable { sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock) }
@@ -89,9 +89,5 @@ class StoreroomShould {
         assertThat(throwable.message).isEqualTo("Product '$SOME_PRODUCT_ID' stock is 3 and you want consume 4 units of stock")
     }
 
-    private fun givenStoreroomWithProductWithStock(stock: Int): Storeroom {
-        val storeroom = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_OWNER_ID), SOME_STOREROOM_NAME)
-        return storeroom.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, stock)
-    }
 
 }
