@@ -5,7 +5,7 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomId
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 import java.util.concurrent.ConcurrentHashMap
 
-class InMemoryStoreroomRepository(val storerooms: MutableMap<StoreroomId, Storeroom> = ConcurrentHashMap()): StoreroomRepository {
+class InMemoryStoreroomRepository(private val storerooms: MutableMap<StoreroomId, Storeroom> = ConcurrentHashMap()): StoreroomRepository {
     override fun findById(id: String): Storeroom? {
         return storerooms[StoreroomId(id)]
     }
