@@ -1,5 +1,6 @@
 package cabanas.garcia.ismael.storeroom.application.storeroom.addproduct
 
+import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.InMemoryEventBus
 import cabanas.garcia.ismael.storeroom.domain.storeroom.*
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomDatabase
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomRepository
@@ -18,12 +19,14 @@ class AddProductCommandHandlerShould {
     private lateinit var storeroomDatabase: InMemoryStoreroomDatabase
     private lateinit var storeroomRepository: StoreroomRepository
     private lateinit var sut: AddProductCommandHandler
+    private lateinit var eventBus: InMemoryEventBus
 
     @BeforeEach
     fun `setUp`() {
         storeroomDatabase = InMemoryStoreroomDatabase()
         storeroomRepository = InMemoryStoreroomRepository(storeroomDatabase)
-        sut = AddProductCommandHandler(storeroomRepository)
+        eventBus = InMemoryEventBus()
+        sut = AddProductCommandHandler(storeroomRepository, eventBus)
     }
 
     @Test
@@ -41,6 +44,22 @@ class AddProductCommandHandlerShould {
         val throwable = catchThrowable { sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID)) }
 
         assertThat(throwable).isInstanceOf(StoreroomDoesNotExistException::class.java)
+    }
+
+    @Test
+    fun `publish product added event successfully`() {
+        givenThatAlreadyExistAStoreroom()
+
+        sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
+
+        assertThatProductAddedEventWasPublished()
+    }
+
+    private fun assertThatProductAddedEventWasPublished() {
+        val event = eventBus.get(SOME_PRODUCT_ID) as ProductAdded?
+
+        assertThat(event).isNotNull
+        assertThat(event).isEqualTo(ProductAdded(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_USER_ID, SOME_QUANTITY))
     }
 
     private fun givenThatAlreadyExistAStoreroom() {
