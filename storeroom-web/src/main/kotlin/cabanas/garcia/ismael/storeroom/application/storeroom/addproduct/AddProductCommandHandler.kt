@@ -18,7 +18,7 @@ class AddProductCommandHandler(
 
         storeroomRepository.save(storeroomUpdated)
 
-        eventBus.publish(ProductAdded(command.productId, command.storeroomId, command.userId, command.quantity))
+        eventBus.publish(storeroomUpdated.events())
     }
 
 }

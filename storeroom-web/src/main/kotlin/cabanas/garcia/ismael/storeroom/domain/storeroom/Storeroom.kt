@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
 import cabanas.garcia.ismael.storeroom.domain.shared.DomainEvent
+import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductAdded
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductConsumed
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
@@ -37,6 +38,8 @@ class Storeroom(
             updateProducts(product.addStock(quantity))
         }
 
+        events = events.plus(ProductAdded(productId, id.value, ownerId, quantity))
+
         return this
     }
 
@@ -53,10 +56,10 @@ class Storeroom(
 
         products = updateProducts(productConsumed)
 
-        events = events.plus(ProductConsumed(productConsumed.id.value, this.id.value, ownerId, productConsumed.stock()))
+        events = events.plus(ProductConsumed(productId, id.value, ownerId, quantity))
 
         if (productConsumed.stock() == ZERO_STOCK) {
-            events = events.plus(ProductSoldOut(productConsumed.id.value, ownerId))
+            events = events.plus(ProductSoldOut(productId, id.value, ownerId))
         }
 
         return this

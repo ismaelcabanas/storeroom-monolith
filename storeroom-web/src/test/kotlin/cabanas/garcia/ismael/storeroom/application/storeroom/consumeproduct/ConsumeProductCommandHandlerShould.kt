@@ -67,11 +67,11 @@ class ConsumeProductCommandHandlerShould {
     }
 
     private fun assertThatProductSoldOutEventWasPublished() {
-        assertThat(eventBus.eventsPublished).contains(ProductSoldOut(SOME_PRODUCT_ID, SOME_USER_ID))
+        assertThat(eventBus.eventsPublished).contains(ProductSoldOut(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_USER_ID))
     }
 
     private fun assertThatProductAddedEventWasPublished() {
-        assertThat(eventBus.eventsPublished).contains(ProductConsumed(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_USER_ID, 0))
+        assertThat(eventBus.eventsPublished).contains(ProductConsumed(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_USER_ID, SOME_QUANTITY))
     }
 
     private fun givenThatAlreadyExistAStoreroomWithProduct() {
