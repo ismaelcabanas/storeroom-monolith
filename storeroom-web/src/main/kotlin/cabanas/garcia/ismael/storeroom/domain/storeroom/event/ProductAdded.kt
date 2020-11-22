@@ -1,15 +1,15 @@
-package cabanas.garcia.ismael.storeroom.domain.storeroom
+package cabanas.garcia.ismael.storeroom.domain.storeroom.event
 
 import cabanas.garcia.ismael.storeroom.domain.shared.DomainEvent
 import java.time.Instant
 
-data class StoreroomCreated(
+data class ProductAdded(
+        val productId: String,
         val storeroomId: String,
-        val storeroomOwnerId: String,
-        val storeroomName:String): DomainEvent {
-
+        val userId: String,
+        val quantity: Int): DomainEvent {
     override fun id(): String {
-        return storeroomId
+        return productId
     }
 
     override fun ocurredOn(): Instant {

@@ -3,7 +3,7 @@ package cabanas.garcia.ismael.storeroom.application.storeroom.create
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommand
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommandHandler
 import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.InMemoryEventBus
-import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomCreated
+import cabanas.garcia.ismael.storeroom.domain.storeroom.event.StoreroomCreated
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomId
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 import cabanas.garcia.ismael.storeroom.domain.storeroom.UserId
