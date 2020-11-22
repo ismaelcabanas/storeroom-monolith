@@ -26,7 +26,7 @@ class StoreroomShould {
         assertThat(sut.id.value).isEqualTo(SOME_STOREROOM_ID)
         assertThat(sut.ownerId.value).isEqualTo(SOME_OWNER_ID)
         assertThat(sut.name).isEqualTo(SOME_STOREROOM_NAME)
-        assertThat(sut.products).isEmpty()
+        assertThat(sut.products()).isEmpty()
     }
 
     @Test

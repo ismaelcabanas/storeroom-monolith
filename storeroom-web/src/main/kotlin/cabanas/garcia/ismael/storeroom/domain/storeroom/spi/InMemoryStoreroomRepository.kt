@@ -17,6 +17,6 @@ class InMemoryStoreroomRepository(private val database: InMemoryStoreroomDatabas
 
     override fun save(storeroom: Storeroom) {
         database.storerooms[storeroom.id] = storeroom
-        storeroom.products.stream().forEach { product -> database.products[product.id] = product }
+        storeroom.products().stream().forEach { product -> database.products[product.id] = product }
     }
 }

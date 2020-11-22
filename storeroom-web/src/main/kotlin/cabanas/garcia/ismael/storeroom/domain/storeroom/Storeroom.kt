@@ -8,7 +8,7 @@ class Storeroom(
         val id: StoreroomId,
         val ownerId: UserId,
         val name: String,
-        var products: Set<Product> = setOf(),
+        private var products: Set<Product> = setOf(),
         private var events: List<DomainEvent> = listOf()) {
 
     companion object {
@@ -16,6 +16,8 @@ class Storeroom(
             return Storeroom(StoreroomId(storeroomId), UserId(ownerId), storeroomName)
         }
     }
+
+    fun products(): Set<Product> = products
 
     fun addProduct(productId: String, ownerId: String): Storeroom {
         return addProduct(productId, ownerId, ZERO_STOCK)
