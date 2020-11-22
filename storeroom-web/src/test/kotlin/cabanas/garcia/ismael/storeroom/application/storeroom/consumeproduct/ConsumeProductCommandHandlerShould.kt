@@ -1,11 +1,11 @@
-package cabanas.garcia.ismael.storeroom.application.storeroom.addproduct
+package cabanas.garcia.ismael.storeroom.application.storeroom.consumeproduct
 
 import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.InMemoryEventBus
 import cabanas.garcia.ismael.storeroom.domain.storeroom.*
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomDatabase
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomRepository
+import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -14,11 +14,10 @@ private const val SOME_PRODUCT_ID = "some product id"
 private const val SOME_USER_ID = "some owner id"
 private const val SOME_QUANTITY = 5
 
-class AddProductCommandHandlerShould {
-
+class ConsumeProductCommandHandlerShould {
     private lateinit var storeroomDatabase: InMemoryStoreroomDatabase
     private lateinit var storeroomRepository: StoreroomRepository
-    private lateinit var sut: AddProductCommandHandler
+    private lateinit var sut: ConsumeProductCommandHandler
     private lateinit var eventBus: InMemoryEventBus
 
     @BeforeEach
@@ -26,14 +25,14 @@ class AddProductCommandHandlerShould {
         storeroomDatabase = InMemoryStoreroomDatabase()
         storeroomRepository = InMemoryStoreroomRepository(storeroomDatabase)
         eventBus = InMemoryEventBus()
-        sut = AddProductCommandHandler(storeroomRepository, eventBus)
+        sut = ConsumeProductCommandHandler(storeroomRepository, eventBus)
     }
 
     @Test
     fun `save products in repository successfully`() {
-        givenThatAlreadyExistAStoreroom()
+        givenThatAlreadyExistAStoreroomWithProduct()
 
-        sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
+        sut.handle(command = ConsumeProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
 
         assertThatProductWasPersistedInStoreroom()
     }
@@ -41,32 +40,46 @@ class AddProductCommandHandlerShould {
     @Test
     fun `throws exception when storeroom does not exist in repository`() {
 
-        val throwable = catchThrowable { sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID)) }
+        val throwable = Assertions.catchThrowable { sut.handle(command = ConsumeProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID)) }
 
         assertThat(throwable).isInstanceOf(StoreroomDoesNotExistException::class.java)
     }
 
     @Test
-    fun `publish product added event successfully`() {
-        givenThatAlreadyExistAStoreroom()
+    fun `publish product consumed event successfully`() {
+        givenThatAlreadyExistAStoreroomWithProduct()
 
-        sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
+        sut.handle(command = ConsumeProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
 
         assertThatProductAddedEventWasPublished()
     }
 
-    private fun assertThatProductAddedEventWasPublished() {
-        assertThat(eventBus.eventsPublished).contains(ProductAdded(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_USER_ID, SOME_QUANTITY))
+    @Test
+    fun `publish product sold out event successfully`() {
+        givenThatAlreadyExistAStoreroomWithProduct()
+
+        sut.handle(command = ConsumeProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
+
+        assertThatProductSoldOutEventWasPublished()
     }
 
-    private fun givenThatAlreadyExistAStoreroom() {
+    private fun assertThatProductSoldOutEventWasPublished() {
+        assertThat(eventBus.eventsPublished).contains(ProductSoldOut(SOME_PRODUCT_ID, SOME_USER_ID))
+    }
+
+    private fun assertThatProductAddedEventWasPublished() {
+        assertThat(eventBus.eventsPublished).contains(ProductConsumed(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_USER_ID, 0))
+    }
+
+    private fun givenThatAlreadyExistAStoreroomWithProduct() {
         storeroomDatabase.storerooms[StoreroomId(SOME_STOREROOM_ID)] = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID), "Test Storeroom")
+        storeroomDatabase.products[ProductId(SOME_PRODUCT_ID)] = Product(ProductId(SOME_PRODUCT_ID), Stock(SOME_QUANTITY))
     }
 
     private fun assertThatProductWasPersistedInStoreroom() {
         val product = storeroomDatabase.products[ProductId(SOME_PRODUCT_ID)]
 
         assertThat(product).isNotNull
-        assertThat(product!!.stock.value).isEqualTo(SOME_QUANTITY)
+        assertThat(product!!.stock.value).isEqualTo(0)
     }
 }

@@ -8,7 +8,11 @@ import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryStoreroomRepository(private val database: InMemoryStoreroomDatabase): StoreroomRepository {
     override fun findById(id: String): Storeroom {
-        return database.storerooms[StoreroomId(id)] ?: throw StoreroomDoesNotExistException(id)
+        var storeroom = database.storerooms[StoreroomId(id)] ?: throw StoreroomDoesNotExistException(id)
+
+        database.products.forEach { (key, value) -> storeroom = storeroom.addProduct(key.value, storeroom.ownerId.value, value.stock.value) }
+
+        return storeroom
     }
 
     override fun save(storeroom: Storeroom) {

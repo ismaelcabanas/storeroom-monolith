@@ -50,10 +50,7 @@ class CreateStoreroomCommandHandlerShould {
     }
 
     private fun assertThatStoreroomCreatedEventWasPublished() {
-        val event = eventBus.get(SOME_STOREROOM_ID) as StoreroomCreated?
-
-        assertThat(event).isNotNull
-        assertThat(event).isEqualTo(StoreroomCreated(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME))
+        assertThat(eventBus.eventsPublished).contains(StoreroomCreated(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME))
     }
 
     private fun assertThatStoreroomWasPersisted() {
