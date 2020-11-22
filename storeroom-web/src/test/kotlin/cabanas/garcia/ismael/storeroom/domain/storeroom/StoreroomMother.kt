@@ -4,12 +4,12 @@ import java.util.*
 
 class StoreroomMother {
     companion object {
-        fun createStoreroomWithProducts(products: List<Product>): Storeroom {
+        fun createStoreroomWithProducts(products: Set<Product>): Storeroom {
             return Storeroom(StoreroomId(UUID.randomUUID().toString()), UserId(UUID.randomUUID().toString()), "Test Storeroom", products)
         }
 
         fun emptyStoreroom(): Storeroom {
-            return createStoreroomWithProducts(emptyList())
+            return createStoreroomWithProducts(emptySet())
         }
     }
 

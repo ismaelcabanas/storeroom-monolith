@@ -1,14 +1,15 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
-import cabanas.garcia.ismael.storeroom.domain.shared.AggregateRoot
+import cabanas.garcia.ismael.storeroom.domain.shared.DomainEvent
 
 private const val ZERO_STOCK: Int = 0
 
-class Storeroom internal constructor(
+class Storeroom(
         val id: StoreroomId,
         val ownerId: UserId,
         val name: String,
-        val products: List<Product> = listOf()): AggregateRoot() {
+        var products: Set<Product> = setOf(),
+        private var events: List<DomainEvent> = listOf()) {
 
     companion object {
         fun create(storeroomId: String, ownerId: String, storeroomName: String): Storeroom {
@@ -23,11 +24,13 @@ class Storeroom internal constructor(
     fun addProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
         val product = productOf(ProductId(productId))
 
-        return if (product == null) {
-            Storeroom(id, UserId(ownerId), name, updateProducts(Product(ProductId(productId), Stock(quantity))))
+        products = if (product == null) {
+            updateProducts(Product(ProductId(productId), Stock(quantity)))
         } else {
-            Storeroom(id, UserId(ownerId), name, updateProducts(product.addStock(quantity)))
+            updateProducts(product.addStock(quantity))
         }
+
+        return this
     }
 
     fun stockOf(productId: String): Int {
@@ -39,15 +42,15 @@ class Storeroom internal constructor(
     fun consumeProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
         val product = productOf(ProductId(productId)) ?: throw ProductDoesNotExitsException(productId)
 
-        return Storeroom(id, this.ownerId, name, updateProducts(product.consumeStock(quantity)))
+        products = updateProducts(product.consumeStock(quantity))
+
+        return this
     }
 
-    private fun updateProducts(product: Product): List<Product> {
-        val currentProducts = products.toMutableList()
+    private fun updateProducts(product: Product): Set<Product> {
+        val currentProducts = products.toMutableSet()
         currentProducts.removeIf { item -> item.id == product.id }
-        currentProducts.add(product)
-
-        return currentProducts
+        return currentProducts.plus(product)
     }
 
     private fun productOf(productId: ProductId): Product? {
