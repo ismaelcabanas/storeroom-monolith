@@ -1,12 +1,14 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
+import cabanas.garcia.ismael.storeroom.domain.shared.AggregateRoot
+
 private const val ZERO_STOCK: Int = 0
 
 class Storeroom internal constructor(
         val id: StoreroomId,
         val ownerId: UserId,
         val name: String,
-        val products: List<Product> = listOf()) {
+        val products: List<Product> = listOf()): AggregateRoot() {
 
     companion object {
         fun create(storeroomId: String, ownerId: String, storeroomName: String): Storeroom {
@@ -22,9 +24,9 @@ class Storeroom internal constructor(
         val product = productOf(ProductId(productId))
 
         return if (product == null) {
-            Storeroom(id, this.ownerId, name, updateProducts(Product(ProductId(productId), Stock(quantity))))
+            Storeroom(id, UserId(ownerId), name, updateProducts(Product(ProductId(productId), Stock(quantity))))
         } else {
-            Storeroom(id, this.ownerId, name, updateProducts(product.addStock(quantity)))
+            Storeroom(id, UserId(ownerId), name, updateProducts(product.addStock(quantity)))
         }
     }
 
