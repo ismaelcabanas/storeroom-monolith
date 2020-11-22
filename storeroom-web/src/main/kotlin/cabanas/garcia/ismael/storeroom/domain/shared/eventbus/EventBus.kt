@@ -4,4 +4,6 @@ import cabanas.garcia.ismael.storeroom.domain.shared.DomainEvent
 
 interface EventBus {
     fun publish(event: DomainEvent)
+
+    fun publish(events: List<DomainEvent>)
 }

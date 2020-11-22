@@ -1,6 +1,8 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
 import cabanas.garcia.ismael.storeroom.domain.shared.DomainEvent
+import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductConsumed
+import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
 
 private const val ZERO_STOCK: Int = 0
@@ -19,6 +21,8 @@ class Storeroom(
     }
 
     fun products(): Set<Product> = products
+
+    fun events(): List<DomainEvent> = events.toList()
 
     fun addProduct(productId: String, ownerId: String): Storeroom {
         return addProduct(productId, ownerId, ZERO_STOCK)
@@ -45,7 +49,15 @@ class Storeroom(
     fun consumeProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
         val product = productOf(ProductId(productId)) ?: throw ProductDoesNotExitsException(productId)
 
-        products = updateProducts(product.consumeStock(quantity))
+        val productConsumed = product.consumeStock(quantity)
+
+        products = updateProducts(productConsumed)
+
+        events = events.plus(ProductConsumed(productConsumed.id.value, this.id.value, ownerId, productConsumed.stock()))
+
+        if (productConsumed.stock() == ZERO_STOCK) {
+            events = events.plus(ProductSoldOut(productConsumed.id.value, ownerId))
+        }
 
         return this
     }

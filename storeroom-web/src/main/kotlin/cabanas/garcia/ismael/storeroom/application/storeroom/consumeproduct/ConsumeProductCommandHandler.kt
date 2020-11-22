@@ -19,11 +19,7 @@ class ConsumeProductCommandHandler(
 
         storeroomRepository.save(storeroomUpdated)
 
-        eventBus.publish(ProductConsumed(command.productId, command.storeroomId, command.userId, storeroomUpdated.stockOf(command.productId)))
-
-        if (storeroomUpdated.stockOf(command.productId) == 0) {
-            eventBus.publish(ProductSoldOut(command.productId, command.userId))
-        }
+        eventBus.publish(storeroomUpdated.events())
     }
 
 }

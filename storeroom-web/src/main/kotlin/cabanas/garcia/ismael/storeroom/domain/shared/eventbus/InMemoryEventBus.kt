@@ -9,4 +9,7 @@ class InMemoryEventBus(val eventsPublished: MutableList<DomainEvent> = mutableLi
         eventsPublished.add(event)
     }
 
+    override fun publish(events: List<DomainEvent>) {
+        events.forEach { event -> eventsPublished.add(event) }
+    }
 }
