@@ -1,5 +1,8 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ConsumeProductStockExceededException
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.NegativeStockException
+
 class Product(val id: ProductId, val stock: Stock) {
 
     fun addStock(quantity: Int): Product {

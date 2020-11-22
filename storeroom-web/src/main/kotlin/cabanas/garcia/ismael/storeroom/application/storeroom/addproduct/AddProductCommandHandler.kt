@@ -3,7 +3,7 @@ package cabanas.garcia.ismael.storeroom.application.storeroom.addproduct
 import cabanas.garcia.ismael.storeroom.application.CommandHandler
 import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.EventBus
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductAdded
-import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomDoesNotExistException
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.StoreroomDoesNotExistException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 
 class AddProductCommandHandler(

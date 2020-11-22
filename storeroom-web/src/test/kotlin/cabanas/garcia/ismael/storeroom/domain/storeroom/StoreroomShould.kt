@@ -1,5 +1,7 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ConsumeProductStockExceededException
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach

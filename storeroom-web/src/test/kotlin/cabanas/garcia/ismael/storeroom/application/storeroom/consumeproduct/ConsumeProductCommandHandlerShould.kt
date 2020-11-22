@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.InMemoryEventBus
 import cabanas.garcia.ismael.storeroom.domain.storeroom.*
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductConsumed
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.StoreroomDoesNotExistException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomDatabase
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomRepository
 import org.assertj.core.api.Assertions

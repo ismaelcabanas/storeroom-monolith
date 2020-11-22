@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.domain.storeroom
+package cabanas.garcia.ismael.storeroom.domain.storeroom.exception
 
 class ConsumeProductStockExceededException(
         productId: String,

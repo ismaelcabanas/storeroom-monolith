@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom.spi
 
 import cabanas.garcia.ismael.storeroom.domain.storeroom.Storeroom
-import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomDoesNotExistException
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.StoreroomDoesNotExistException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomId
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 import java.util.concurrent.ConcurrentHashMap

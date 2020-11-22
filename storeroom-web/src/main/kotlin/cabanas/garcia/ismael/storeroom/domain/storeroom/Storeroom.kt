@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
 import cabanas.garcia.ismael.storeroom.domain.shared.DomainEvent
+import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
 
 private const val ZERO_STOCK: Int = 0
 
