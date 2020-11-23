@@ -6,8 +6,6 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductConsumed
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
 
-private const val ZERO_STOCK: Int = 0
-
 class Storeroom(
         val id: StoreroomId,
         val ownerId: UserId,
@@ -16,18 +14,17 @@ class Storeroom(
         private var events: List<DomainEvent> = listOf()) {
 
     companion object {
-        fun create(storeroomId: String, ownerId: String, storeroomName: String): Storeroom {
-            return Storeroom(StoreroomId(storeroomId), UserId(ownerId), storeroomName)
-        }
+        const val ZERO_STOCK: Int = 0
+
+        fun create(storeroomId: String, ownerId: String, storeroomName: String): Storeroom =
+                Storeroom(StoreroomId(storeroomId), UserId(ownerId), storeroomName)
     }
 
     fun products(): Set<Product> = products
 
     fun events(): List<DomainEvent> = events.toList()
 
-    fun addProduct(productId: String, ownerId: String): Storeroom {
-        return addProduct(productId, ownerId, ZERO_STOCK)
-    }
+    fun addProduct(productId: String, ownerId: String): Storeroom = addProduct(productId, ownerId, ZERO_STOCK)
 
     fun addProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
         val product = productOf(ProductId(productId))
@@ -71,9 +68,7 @@ class Storeroom(
         return currentProducts.plus(product)
     }
 
-    private fun productOf(productId: ProductId): Product? {
-        return products.find { product -> product.id == productId }
-    }
+    private fun productOf(productId: ProductId): Product? = products.find { product -> product.id == productId }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -97,8 +92,7 @@ class Storeroom(
         return result
     }
 
-    override fun toString(): String {
-        return "Storeroom(id=$id, ownerId=$ownerId, name='$name', products=$products)"
-    }
+    override fun toString(): String = "Storeroom(id=$id, ownerId=$ownerId, name='$name', products=$products)"
+
 
 }
