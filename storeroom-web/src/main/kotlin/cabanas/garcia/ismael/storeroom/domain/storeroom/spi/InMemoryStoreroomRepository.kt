@@ -5,7 +5,7 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.StoreroomDoesN
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomId
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 
-class InMemoryStoreroomRepository(private val database: InMemoryStoreroomDatabase): StoreroomRepository {
+class InMemoryStoreroomRepository(private val database: InMemoryDatabase): StoreroomRepository {
     override fun findById(id: String): Storeroom {
         var storeroom = database.storerooms[StoreroomId(id)] ?: throw StoreroomDoesNotExistException(id)
 

@@ -6,6 +6,8 @@ class ShoppingList internal constructor(
         val ownerId: UserId,
         private var products: List<Product> = listOf()) {
 
+    fun products() = products
+
     fun addProduct(productId: String): ShoppingList {
         val product = productOf(ProductId(productId))
 
