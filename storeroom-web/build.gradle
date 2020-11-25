@@ -23,6 +23,10 @@ project.ext {
 	cucumberVersion = '6.6.0'
 }
 
+testSets {
+	integrationTest { dirName = 'integration-test' }
+}
+
 dependencies {
 	// Spring dependencies
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
