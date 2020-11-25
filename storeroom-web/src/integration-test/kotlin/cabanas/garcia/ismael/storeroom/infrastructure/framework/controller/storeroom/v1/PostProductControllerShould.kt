@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
-@WebMvcTest(value = [PostStoreroomController::class])
+@WebMvcTest(value = [PostProductController::class])
 @ActiveProfiles("integration-test")
 @AutoConfigureMockMvc
-class PostStoreroomControllerShould {
+class PostProductControllerShould {
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -29,7 +29,7 @@ class PostStoreroomControllerShould {
     }
 
     @Test
-    fun `create a given storeroom`() {
+    fun `add product to storeroom`() {
         given()
                 .contentType("application/json")
                 .header("User-Id", SOME_STOREROOM_USER_ID)
@@ -39,7 +39,7 @@ class PostStoreroomControllerShould {
                         }"""
                 )
                 .`when`()
-                .post("/v1/storerooms")
+                .post("/v1/storerooms/id/products")
                 .then()
                 .assertThat(status().isCreated)
                 .header("Location", equalTo("http://localhost/v1/storerooms/some%2520storeroom%2520request%2520id"))
