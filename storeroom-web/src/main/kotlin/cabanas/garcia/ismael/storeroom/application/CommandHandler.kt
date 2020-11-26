@@ -5,7 +5,7 @@ package cabanas.garcia.ismael.storeroom.application
  *
  * @param <C> type of command
 </C> */
-interface CommandHandler<C : Command?> {
+interface CommandHandler<C : Command> {
     /**
      * Handles the command.
      *
