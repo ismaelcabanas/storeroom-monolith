@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class AddProductCommandHandlerShould {
+class ReplenishProductCommandHandlerShould {
 
     private lateinit var database: InMemoryDatabase
     private lateinit var shoppingListRepository: ShoppingListRepository

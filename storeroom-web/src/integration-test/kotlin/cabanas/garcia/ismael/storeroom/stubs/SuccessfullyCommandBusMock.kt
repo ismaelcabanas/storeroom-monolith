@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.storeroom.stubs
 
 import cabanas.garcia.ismael.storeroom.application.Command
 import cabanas.garcia.ismael.storeroom.application.shared.CommandBus
+import cabanas.garcia.ismael.storeroom.application.storeroom.replenishproduct.ReplenishProductCommand
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommand
 import org.assertj.core.api.Assertions.assertThat
 
@@ -15,8 +16,17 @@ class SuccessfullyCommandBusMock(): CommandBus {
     fun verifyCommandWasDispatched(expected: CreateStoreroomCommand) {
         val actual = this.commandDispatched as CreateStoreroomCommand
 
-        assertThat(expected.storeroomId).isEqualTo(actual.storeroomId)
-        assertThat(expected.storeroomName).isEqualTo(actual.storeroomName)
-        assertThat(expected.ownerId).isEqualTo(actual.ownerId)
+        assertThat(actual.storeroomId).isEqualTo(expected.storeroomId)
+        assertThat(actual.storeroomName).isEqualTo(expected.storeroomName)
+        assertThat(actual.ownerId).isEqualTo(expected.ownerId)
+    }
+
+    fun verifyCommandWasDispatched(expected: ReplenishProductCommand) {
+        val actual = this.commandDispatched as ReplenishProductCommand
+
+        assertThat(actual.storeroomId).isEqualTo(expected.storeroomId)
+        assertThat(actual.productId).isEqualTo(expected.productId)
+        assertThat(actual.userId).isEqualTo(expected.userId)
+        assertThat(actual.quantity).isEqualTo(expected.quantity)
     }
 }

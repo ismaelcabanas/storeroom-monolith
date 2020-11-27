@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.application.storeroom.addproduct
+package cabanas.garcia.ismael.storeroom.application.storeroom.replenishproduct
 
 import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.InMemoryEventBus
 import cabanas.garcia.ismael.storeroom.domain.storeroom.*
@@ -16,11 +16,11 @@ private const val SOME_PRODUCT_ID = "some product id"
 private const val SOME_USER_ID = "some owner id"
 private const val SOME_QUANTITY = 5
 
-class AddProductCommandHandlerShould {
+class ReplenishProductCommandHandlerShould {
 
     private lateinit var database: InMemoryDatabase
     private lateinit var storeroomRepository: StoreroomRepository
-    private lateinit var sut: AddProductCommandHandler
+    private lateinit var sut: ReplenishProductCommandHandler
     private lateinit var eventBus: InMemoryEventBus
 
     @BeforeEach
@@ -28,14 +28,14 @@ class AddProductCommandHandlerShould {
         database = InMemoryDatabase()
         storeroomRepository = InMemoryStoreroomRepository(database)
         eventBus = InMemoryEventBus()
-        sut = AddProductCommandHandler(storeroomRepository, eventBus)
+        sut = ReplenishProductCommandHandler(storeroomRepository, eventBus)
     }
 
     @Test
     fun `save products in repository successfully`() {
         givenThatAlreadyExistAStoreroom()
 
-        sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
+        sut.handle(command = ReplenishProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
 
         assertThatProductWasPersistedInStoreroom()
     }
@@ -43,7 +43,7 @@ class AddProductCommandHandlerShould {
     @Test
     fun `throws exception when storeroom does not exist in repository`() {
 
-        val throwable = catchThrowable { sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID)) }
+        val throwable = catchThrowable { sut.handle(command = ReplenishProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID)) }
 
         assertThat(throwable).isInstanceOf(StoreroomDoesNotExistException::class.java)
     }
@@ -52,7 +52,7 @@ class AddProductCommandHandlerShould {
     fun `publish product added event successfully`() {
         givenThatAlreadyExistAStoreroom()
 
-        sut.handle(command = AddProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
+        sut.handle(command = ReplenishProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_ID, SOME_QUANTITY, SOME_USER_ID))
 
         assertThatProductAddedEventWasPublished()
     }

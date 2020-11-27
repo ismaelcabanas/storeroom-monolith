@@ -1,16 +1,15 @@
-package cabanas.garcia.ismael.storeroom.application.storeroom.addproduct
+package cabanas.garcia.ismael.storeroom.application.storeroom.replenishproduct
 
 import cabanas.garcia.ismael.storeroom.application.CommandHandler
 import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.EventBus
-import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductAdded
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.StoreroomDoesNotExistException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 
-class AddProductCommandHandler(
+class ReplenishProductCommandHandler(
         private val storeroomRepository: StoreroomRepository,
-        private val eventBus: EventBus): CommandHandler<AddProductCommand> {
+        private val eventBus: EventBus): CommandHandler<ReplenishProductCommand> {
 
-    override fun handle(command: AddProductCommand) {
+    override fun handle(command: ReplenishProductCommand) {
         val storeroom = storeroomRepository.findById(command.storeroomId)
                 ?: throw StoreroomDoesNotExistException(command.storeroomId)
 
