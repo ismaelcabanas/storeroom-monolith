@@ -8,8 +8,8 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomId
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 import cabanas.garcia.ismael.storeroom.domain.storeroom.UserId
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.DefaultStoreroomFactory
-import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryDatabase
-import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomRepository
+import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
+import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom.InMemoryStoreroomRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -20,14 +20,12 @@ private const val SOME_STOREROOM_NAME = "some storeroom name"
 
 class CreateStoreroomCommandHandlerShould {
 
-    private lateinit var database: InMemoryDatabase
     private lateinit var storeroomRepository: StoreroomRepository
     private lateinit var eventBus: InMemoryEventBus
 
     @BeforeEach
     fun `setUp`() {
-        database = InMemoryDatabase()
-        storeroomRepository = InMemoryStoreroomRepository(database)
+        storeroomRepository = InMemoryStoreroomRepository()
         eventBus = InMemoryEventBus()
     }
 
@@ -54,10 +52,10 @@ class CreateStoreroomCommandHandlerShould {
     }
 
     private fun assertThatStoreroomWasPersisted() {
-        val storeroom = database.storerooms[StoreroomId(SOME_STOREROOM_ID)]
+        val storeroom = InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_ID)]
 
-        assertThat(storeroom).isNotNull
-        assertThat(storeroom!!.name).isEqualTo(SOME_STOREROOM_NAME)
-        assertThat(storeroom!!.ownerId).isEqualTo(UserId(SOME_OWNER_ID))
+        assertThat(storeroom!!).isNotNull
+        assertThat(storeroom.name).isEqualTo(SOME_STOREROOM_NAME)
+        assertThat(storeroom.ownerId).isEqualTo(UserId(SOME_OWNER_ID))
     }
 }

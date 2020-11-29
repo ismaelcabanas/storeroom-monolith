@@ -25,6 +25,7 @@ project.ext {
 
 testSets {
 	integrationTest { dirName = 'integration-test' }
+	acceptanceTest { dirName = 'acceptance-test' }
 }
 
 dependencies {

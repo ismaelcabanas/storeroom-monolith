@@ -2,7 +2,7 @@ package cabanas.garcia.ismael.storeroom.di
 
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommandHandler
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.DefaultStoreroomFactory
-import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomRepository
+import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom.InMemoryStoreroomRepository
 import io.cucumber.core.backend.ObjectFactory
 import io.cucumber.picocontainer.PicoFactory
 

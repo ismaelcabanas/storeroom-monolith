@@ -5,8 +5,8 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.*
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductConsumed
 import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.StoreroomDoesNotExistException
-import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryDatabase
-import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryStoreroomRepository
+import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
+import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom.InMemoryStoreroomRepository
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -18,15 +18,13 @@ private const val SOME_USER_ID = "some owner id"
 private const val SOME_QUANTITY = 5
 
 class ConsumeProductCommandHandlerShould {
-    private lateinit var database: InMemoryDatabase
     private lateinit var storeroomRepository: StoreroomRepository
     private lateinit var sut: ConsumeProductCommandHandler
     private lateinit var eventBus: InMemoryEventBus
 
     @BeforeEach
     fun `setUp`() {
-        database = InMemoryDatabase()
-        storeroomRepository = InMemoryStoreroomRepository(database)
+        storeroomRepository = InMemoryStoreroomRepository()
         eventBus = InMemoryEventBus()
         sut = ConsumeProductCommandHandler(storeroomRepository, eventBus)
     }
@@ -75,12 +73,12 @@ class ConsumeProductCommandHandlerShould {
     }
 
     private fun givenThatAlreadyExistAStoreroomWithProduct() {
-        database.storerooms[StoreroomId(SOME_STOREROOM_ID)] = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID), "Test Storeroom")
-        database.products[ProductId(SOME_PRODUCT_ID)] = Product(ProductId(SOME_PRODUCT_ID), Stock(SOME_QUANTITY))
+        InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_ID)] = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID), "Test Storeroom")
+        InMemoryDatabase.products[ProductId(SOME_PRODUCT_ID)] = Product(ProductId(SOME_PRODUCT_ID), Stock(SOME_QUANTITY))
     }
 
     private fun assertThatProductWasPersistedInStoreroom() {
-        val product = database.products[ProductId(SOME_PRODUCT_ID)]
+        val product = InMemoryDatabase.products[ProductId(SOME_PRODUCT_ID)]
 
         assertThat(product).isNotNull
         assertThat(product!!.stock.value).isEqualTo(0)

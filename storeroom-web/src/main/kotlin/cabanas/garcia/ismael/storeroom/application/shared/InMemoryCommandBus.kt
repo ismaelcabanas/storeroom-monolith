@@ -4,9 +4,9 @@ import cabanas.garcia.ismael.storeroom.application.Command
 import cabanas.garcia.ismael.storeroom.application.CommandHandler
 import java.util.concurrent.ConcurrentHashMap
 
-class InMemoryCommandBus(private val registry: MutableMap<String, CommandHandler<Command>> = ConcurrentHashMap()): CommandBus {
+object InMemoryCommandBus: CommandBus {
 
-    fun register(commandHandler: CommandHandler<Command>) = registry.put(commandHandler.javaClass.simpleName, commandHandler)
+    var registry: MutableMap<String, CommandHandler<Command>> = ConcurrentHashMap()
 
     override fun <C : Command> dispatch(command: C) {
         val commandHandler = registry[command.javaClass.simpleName] as CommandHandler<C>

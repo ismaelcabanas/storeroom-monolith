@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.application.shoppinglist.addproduct
 
 import cabanas.garcia.ismael.storeroom.domain.shoppinglist.*
-import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.InMemoryDatabase
+import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
@@ -9,14 +9,12 @@ import org.junit.jupiter.api.Test
 
 class ReplenishProductCommandHandlerShould {
 
-    private lateinit var database: InMemoryDatabase
     private lateinit var shoppingListRepository: ShoppingListRepository
     private lateinit var sut: AddProductCommandHandler
 
     @BeforeEach
     fun `setUp`() {
-        database = InMemoryDatabase()
-        shoppingListRepository = InMemoryShoppingRepository(database)
+        shoppingListRepository = InMemoryShoppingRepository()
         sut = AddProductCommandHandler(shoppingListRepository)
     }
 
@@ -38,11 +36,11 @@ class ReplenishProductCommandHandlerShould {
     }
 
     private fun givenThatAlreadyExistAShoppingList() {
-        database.shoppingLists[ShoppingListId(SOME_SHOPPING_LIST_ID)] = ShoppingList(ShoppingListId(SOME_SHOPPING_LIST_ID), StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID))
+        InMemoryDatabase.shoppingLists[ShoppingListId(SOME_SHOPPING_LIST_ID)] = ShoppingList(ShoppingListId(SOME_SHOPPING_LIST_ID), StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID))
     }
 
     private fun assertThatProductWasPersistedInShoppingList() {
-        val product = database.productsShoppingList[ProductId(SOME_PRODUCT_ID)]
+        val product = InMemoryDatabase.productsShoppingList[ProductId(SOME_PRODUCT_ID)]
 
         assertThat(product).isNotNull
     }
