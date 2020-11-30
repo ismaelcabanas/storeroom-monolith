@@ -61,7 +61,7 @@ dependencies {
 	// Kotlin Test
 	testImplementation("org.jetbrains.kotlin:kotlin-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-	testImplementation("com.nhaarman:mockito-kotlin:1.6.0")
+	testImplementation("io.mockk:mockk:1.10.2")
 	testImplementation("org.awaitility:awaitility-kotlin:4.0.3")
 	testImplementation("com.ninja-squad:springmockk:1.1.3")
 

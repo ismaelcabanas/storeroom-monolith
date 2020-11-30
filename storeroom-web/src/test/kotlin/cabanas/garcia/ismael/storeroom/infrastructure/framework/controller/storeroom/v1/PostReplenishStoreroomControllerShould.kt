@@ -3,40 +3,23 @@ package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.stor
 import cabanas.garcia.ismael.storeroom.application.storeroom.replenishproduct.ReplenishProductCommand
 import cabanas.garcia.ismael.storeroom.stubs.SuccessfullyCommandBusMock
 import io.restassured.module.mockmvc.RestAssuredMockMvc
-import io.restassured.module.mockmvc.RestAssuredMockMvc.given
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.context.annotation.Import
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@ExtendWith(SpringExtension::class)
-@WebMvcTest(value = [PostReplenishStoreroomController::class])
-@Import(value = [CustomTestConfiguration::class])
-@ActiveProfiles("integration-test")
-@AutoConfigureMockMvc
 class PostReplenishStoreroomControllerShould {
-
-    @Autowired
-    private lateinit var mvc: MockMvc
-
-    @Autowired
     private lateinit var commandBus: SuccessfullyCommandBusMock
 
     @BeforeEach
-    fun setUp() {
-        RestAssuredMockMvc.mockMvc(mvc)
+    fun configureSystemUnderTest() {
+        commandBus = SuccessfullyCommandBusMock()
+
+        RestAssuredMockMvc.standaloneSetup(PostReplenishStoreroomController(commandBus))
     }
 
     @Test
-    fun `replenish products to a given storeroom`() {
-        given()
+    fun `return 200 when post replenish product to a given storeroom`() {
+        RestAssuredMockMvc.given()
                 .contentType("application/json")
                 .header("User-Id", SOME_STOREROOM_USER_ID)
                 .body("""{
@@ -47,7 +30,21 @@ class PostReplenishStoreroomControllerShould {
                 .`when`()
                 .post("/v1/storerooms/$SOME_STOREROOM_ID/replenish")
                 .then()
-                .assertThat(status().isOk)
+                .assertThat(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
+    fun `dispatch command when post replenish product to a given storeroom`() {
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .header("User-Id", SOME_STOREROOM_USER_ID)
+                .body("""{
+                          "productId": "$SOME_PRODUCT_REQUEST_ID",
+                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
+                        }"""
+                )
+                .`when`()
+                .post("/v1/storerooms/$SOME_STOREROOM_ID/replenish")
 
         commandBus.verifyCommandWasDispatched(ReplenishProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_REQUEST_ID, SOME_PRODUCT_REQUEST_QUANTITY, SOME_STOREROOM_USER_ID))
     }
