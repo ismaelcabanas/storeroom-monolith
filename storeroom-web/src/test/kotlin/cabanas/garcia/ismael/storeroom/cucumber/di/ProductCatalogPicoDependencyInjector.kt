@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.di
+package cabanas.garcia.ismael.storeroom.cucumber.di
 
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommandHandler
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductCreator

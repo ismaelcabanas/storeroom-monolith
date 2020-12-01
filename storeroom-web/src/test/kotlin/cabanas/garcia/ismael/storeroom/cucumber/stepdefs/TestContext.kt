@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.stepdefs
+package cabanas.garcia.ismael.storeroom.cucumber.stepdefs
 
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommand
 import cabanas.garcia.ismael.storeroom.domain.storeroom.Storeroom

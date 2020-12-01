@@ -1,11 +1,9 @@
-package cabanas.garcia.ismael.storeroom.stepdefs
+package cabanas.garcia.ismael.storeroom.cucumber.stepdefs
 
 import cabanas.garcia.ismael.storeroom.application.ApplicationError
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommand
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommandHandler
-import cabanas.garcia.ismael.storeroom.assertions.that
-import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductDetails
-import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductId
+import cabanas.garcia.ismael.storeroom.cucumber.assertions.that
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.spi.stubs.InMemoryProductRepository
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Given

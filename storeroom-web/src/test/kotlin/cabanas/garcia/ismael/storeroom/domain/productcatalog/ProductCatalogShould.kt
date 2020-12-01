@@ -3,7 +3,7 @@ package cabanas.garcia.ismael.storeroom.domain.productcatalog
 import cabanas.garcia.ismael.storeroom.application.ApplicationError
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommand
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommandHandler
-import cabanas.garcia.ismael.storeroom.assertions.that
+import cabanas.garcia.ismael.storeroom.cucumber.assertions.that
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.api.CreateProduct
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.spi.stubs.InMemoryProductRepository
 import org.assertj.core.api.Assertions

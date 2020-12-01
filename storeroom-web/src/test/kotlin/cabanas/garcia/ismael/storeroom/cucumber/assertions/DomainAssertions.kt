@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.assertions
+package cabanas.garcia.ismael.storeroom.cucumber.assertions
 
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.Product
 import cabanas.garcia.ismael.storeroom.domain.storeroom.Storeroom

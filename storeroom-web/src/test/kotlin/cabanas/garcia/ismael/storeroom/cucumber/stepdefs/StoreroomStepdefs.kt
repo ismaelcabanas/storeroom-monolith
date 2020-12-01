@@ -1,6 +1,6 @@
-package cabanas.garcia.ismael.storeroom.stepdefs
+package cabanas.garcia.ismael.storeroom.cucumber.stepdefs
 
-import cabanas.garcia.ismael.storeroom.assertions.that
+import cabanas.garcia.ismael.storeroom.cucumber.assertions.that
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomFactory
 import io.cucumber.java.en.And
 import io.cucumber.java.en.Given

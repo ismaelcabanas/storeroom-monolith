@@ -1,6 +1,6 @@
-package cabanas.garcia.ismael.storeroom
+package cabanas.garcia.ismael.storeroom.cucumber
 
-import cabanas.garcia.ismael.storeroom.di.ProductCatalogPicoDependencyInjector
+import cabanas.garcia.ismael.storeroom.cucumber.di.ProductCatalogPicoDependencyInjector
 import io.cucumber.junit.Cucumber
 import io.cucumber.junit.CucumberOptions
 import org.junit.runner.RunWith
