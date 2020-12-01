@@ -5,7 +5,6 @@ import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.StoreroomWebApplication
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.assertj.core.api.Assertions.assertThat
-import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
@@ -64,7 +62,26 @@ class StoreroomAcceptanceTest {
                 .`when`()
                 .post("/v1/storerooms/$SOME_STOREROOM_REQUEST_ID/replenish")
 
-        assertThatProductWasReplenishedInStoreroomWithStock(currentStock + SOME_PRODUCT_REQUEST_QUANTITY)
+        assertThatProductInStoreroomHasStock(currentStock + SOME_PRODUCT_REQUEST_QUANTITY)
+    }
+
+    @Test
+    fun `consume products from storeroom successfully`() {
+        val currentStock = 9
+        givenStoreroomHasProductWithStock(currentStock)
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .header("User-Id", SOME_STOREROOM_USER_ID)
+                .body("""{
+                          "productId": "$SOME_PRODUCT_REQUEST_ID",
+                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
+                        }"""
+                )
+                .`when`()
+                .post("/v1/storerooms/$SOME_STOREROOM_REQUEST_ID/consume")
+
+        assertThatProductInStoreroomHasStock(currentStock - SOME_PRODUCT_REQUEST_QUANTITY)
     }
 
     private fun givenStoreroomHasProductWithStock(currentStock: Int) {
@@ -72,7 +89,7 @@ class StoreroomAcceptanceTest {
         InMemoryDatabase.products[ProductId(SOME_PRODUCT_REQUEST_ID)] = Product(ProductId(SOME_PRODUCT_REQUEST_ID), Stock(currentStock))
     }
 
-    private fun assertThatProductWasReplenishedInStoreroomWithStock(expectedStock: Int) {
+    private fun assertThatProductInStoreroomHasStock(expectedStock: Int) {
         val storeroomProduct = InMemoryDatabase.products[ProductId(SOME_PRODUCT_REQUEST_ID)]
         assertThat(storeroomProduct!!).isNotNull
         assertThat(storeroomProduct.stock.value).isEqualTo(expectedStock)

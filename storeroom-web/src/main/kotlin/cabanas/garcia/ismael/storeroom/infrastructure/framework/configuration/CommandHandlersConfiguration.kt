@@ -1,6 +1,7 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.configuration
 
 import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.CreateProductCommandHandler
+import cabanas.garcia.ismael.storeroom.application.storeroom.consumeproduct.ConsumeProductCommandHandler
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommandHandler
 import cabanas.garcia.ismael.storeroom.application.storeroom.replenishproduct.ReplenishProductCommandHandler
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.api.CreateProduct
@@ -27,4 +28,10 @@ class CommandHandlersConfiguration {
             storeroomRepository: StoreroomRepository,
             eventBus: EventBus
     ) = ReplenishProductCommandHandler(storeroomRepository, eventBus)
+
+    @Bean
+    fun consumeProductCommandHandler(
+            storeroomRepository: StoreroomRepository,
+            eventBus: EventBus
+    ) = ConsumeProductCommandHandler(storeroomRepository, eventBus)
 }
