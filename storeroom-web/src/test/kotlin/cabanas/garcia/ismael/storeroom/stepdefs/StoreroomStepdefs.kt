@@ -35,7 +35,7 @@ class StoreroomStepdefs(private val testContext: TestContext,
         testContext.storeroom = storeroomFactory.create(storeroomId, testContext.userId, storeroomName)
     }
 
-    @When("^he adds (\\d+) (.+) to his storeroom$")
+    @When("^he replenishes (\\d+) (.+) to his storeroom$")
     fun `he adds n quantity of the product to his storeroom`(quantity: Int, productName: String) {
         `his storeroom has some stock of the product`(quantity, productName)
     }
