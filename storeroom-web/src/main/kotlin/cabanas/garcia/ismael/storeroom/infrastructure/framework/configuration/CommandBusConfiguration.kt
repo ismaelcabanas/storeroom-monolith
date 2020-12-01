@@ -6,14 +6,19 @@ import cabanas.garcia.ismael.storeroom.application.shared.CommandBus
 import cabanas.garcia.ismael.storeroom.application.shared.InMemoryCommandBus
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommand
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommandHandler
+import cabanas.garcia.ismael.storeroom.application.storeroom.replenishproduct.ReplenishProductCommand
+import cabanas.garcia.ismael.storeroom.application.storeroom.replenishproduct.ReplenishProductCommandHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class CommandBusConfiguration {
     @Bean
-    fun inMemoryCommandBus(createStoreroomCommandHandler : CreateStoreroomCommandHandler): CommandBus {
+    fun inMemoryCommandBus(
+            createStoreroomCommandHandler: CreateStoreroomCommandHandler,
+            replenishProductCommandHandler: ReplenishProductCommandHandler): CommandBus {
         InMemoryCommandBus.registry[CreateStoreroomCommand::class.java.simpleName] = createStoreroomCommandHandler as CommandHandler<Command>
+        InMemoryCommandBus.registry[ReplenishProductCommand::class.java.simpleName] = replenishProductCommandHandler as CommandHandler<Command>
 
         return InMemoryCommandBus
     }

@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom
 
-import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomId
+import cabanas.garcia.ismael.storeroom.domain.storeroom.*
 import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.StoreroomWebApplication
 import io.restassured.module.mockmvc.RestAssuredMockMvc
@@ -44,11 +44,38 @@ class StoreroomAcceptanceTest {
                 )
                 .`when`()
                 .post("/v1/storerooms")
-                .then()
-                .assertThat(MockMvcResultMatchers.status().isCreated)
-                .header("Location", Matchers.equalTo("http://localhost/v1/storerooms/some%2520storeroom%2520request%2520id"))
 
         assertThatStoreroomWasCreatedWithoutProducts()
+    }
+
+    @Test
+    fun `replenish products to storeroom successfully`() {
+        val currentStock = 4
+        givenStoreroomHasProductWithStock(currentStock)
+
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .header("User-Id", SOME_STOREROOM_USER_ID)
+                .body("""{
+                          "productId": "$SOME_PRODUCT_REQUEST_ID",
+                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
+                        }"""
+                )
+                .`when`()
+                .post("/v1/storerooms/$SOME_STOREROOM_REQUEST_ID/replenish")
+
+        assertThatProductWasReplenishedInStoreroomWithStock(currentStock + SOME_PRODUCT_REQUEST_QUANTITY)
+    }
+
+    private fun givenStoreroomHasProductWithStock(currentStock: Int) {
+        InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_REQUEST_ID)] = Storeroom(StoreroomId(SOME_STOREROOM_REQUEST_ID), UserId(SOME_STOREROOM_USER_ID), SOME_STOREROOM_REQUEST_NAME)
+        InMemoryDatabase.products[ProductId(SOME_PRODUCT_REQUEST_ID)] = Product(ProductId(SOME_PRODUCT_REQUEST_ID), Stock(currentStock))
+    }
+
+    private fun assertThatProductWasReplenishedInStoreroomWithStock(expectedStock: Int) {
+        val storeroomProduct = InMemoryDatabase.products[ProductId(SOME_PRODUCT_REQUEST_ID)]
+        assertThat(storeroomProduct!!).isNotNull
+        assertThat(storeroomProduct.stock.value).isEqualTo(expectedStock)
     }
 
     private fun assertThatStoreroomWasCreatedWithoutProducts() {
@@ -62,6 +89,9 @@ class StoreroomAcceptanceTest {
     companion object {
         private const val SOME_STOREROOM_REQUEST_ID = "some storeroom request id"
         private const val SOME_STOREROOM_REQUEST_NAME = "some storeroom request name"
+
+        private const val SOME_PRODUCT_REQUEST_ID = "some product request id"
+        private const val SOME_PRODUCT_REQUEST_QUANTITY = 5
 
         private const val SOME_STOREROOM_USER_ID = "some user id"
     }
