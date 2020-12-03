@@ -67,16 +67,29 @@ dependencies {
 
 }
 
-test {
+tasks.withType(Test) {
 	useJUnitPlatform()
-	finalizedBy jacocoTestReport
 }
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
+
+check.dependsOn acceptanceTest
+acceptanceTest.mustRunAfter integrationTest
 
 compileKotlin {
 	kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 compileTestKotlin {
+	kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
+compileIntegrationTestKotlin {
+	kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
+
+compileAcceptanceTestKotlin {
 	kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
