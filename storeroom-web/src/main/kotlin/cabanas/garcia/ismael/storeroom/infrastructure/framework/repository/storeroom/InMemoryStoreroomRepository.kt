@@ -8,10 +8,6 @@ import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
 
 class InMemoryStoreroomRepository: StoreroomRepository {
 
-    init {
-        InMemoryDatabase.clean()
-    }
-
     override fun findById(id: String): Storeroom {
         var storeroom = InMemoryDatabase.storerooms[StoreroomId(id)] ?: throw StoreroomDoesNotExistException(id)
 
@@ -23,5 +19,9 @@ class InMemoryStoreroomRepository: StoreroomRepository {
     override fun save(storeroom: Storeroom) {
         InMemoryDatabase.storerooms[storeroom.id] = storeroom
         storeroom.products().stream().forEach { product -> InMemoryDatabase.products[product.id] = product }
+    }
+
+    fun clean() {
+        InMemoryDatabase.clean()
     }
 }

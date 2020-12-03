@@ -18,13 +18,13 @@ private const val SOME_USER_ID = "some owner id"
 private const val SOME_QUANTITY = 5
 
 class ConsumeProductCommandHandlerShould {
-    private lateinit var storeroomRepository: StoreroomRepository
+    private val storeroomRepository = InMemoryStoreroomRepository()
     private lateinit var sut: ConsumeProductCommandHandler
     private lateinit var eventBus: InMemoryEventBus
 
     @BeforeEach
     fun `setUp`() {
-        storeroomRepository = InMemoryStoreroomRepository()
+        storeroomRepository.clean()
         eventBus = InMemoryEventBus()
         sut = ConsumeProductCommandHandler(storeroomRepository, eventBus)
     }

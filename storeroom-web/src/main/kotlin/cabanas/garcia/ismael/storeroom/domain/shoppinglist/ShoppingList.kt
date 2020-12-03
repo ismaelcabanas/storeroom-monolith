@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom.domain.shoppinglist
 
-class ShoppingList internal constructor(
+class ShoppingList(
         val id: ShoppingListId,
         val storeroomId: StoreroomId,
         val ownerId: UserId,
