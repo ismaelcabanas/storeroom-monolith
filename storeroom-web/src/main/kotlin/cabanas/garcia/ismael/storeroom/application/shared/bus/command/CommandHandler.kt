@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.application
+package cabanas.garcia.ismael.storeroom.application.shared.bus.command
 
 /**
  * A handler for a [Command].

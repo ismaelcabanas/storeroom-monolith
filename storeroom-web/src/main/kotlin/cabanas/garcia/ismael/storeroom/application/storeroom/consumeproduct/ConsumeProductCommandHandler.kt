@@ -1,9 +1,7 @@
 package cabanas.garcia.ismael.storeroom.application.storeroom.consumeproduct
 
-import cabanas.garcia.ismael.storeroom.application.CommandHandler
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandHandler
 import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.EventBus
-import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductConsumed
-import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.StoreroomDoesNotExistException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 

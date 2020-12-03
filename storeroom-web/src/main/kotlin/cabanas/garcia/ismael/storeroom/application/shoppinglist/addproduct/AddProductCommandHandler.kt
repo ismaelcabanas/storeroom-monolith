@@ -1,7 +1,6 @@
 package cabanas.garcia.ismael.storeroom.application.shoppinglist.addproduct
 
-import cabanas.garcia.ismael.storeroom.application.CommandHandler
-import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.EventBus
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandHandler
 import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListDoesNotExistException
 import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListRepository
 

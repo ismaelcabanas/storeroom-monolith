@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct
 
 import cabanas.garcia.ismael.storeroom.application.ApplicationError
-import cabanas.garcia.ismael.storeroom.application.CommandHandler
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandHandler
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductNameAlreadyExistsException
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductDetails
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductId

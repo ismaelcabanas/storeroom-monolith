@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.storeroom.v1
 
-import cabanas.garcia.ismael.storeroom.application.shared.CommandBus
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandBus
 import cabanas.garcia.ismael.storeroom.application.storeroom.createstoreroom.CreateStoreroomCommand
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.http.ResponseEntity

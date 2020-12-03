@@ -1,8 +1,8 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.shared.bus
 
-import cabanas.garcia.ismael.storeroom.application.Command
-import cabanas.garcia.ismael.storeroom.application.CommandHandler
-import cabanas.garcia.ismael.storeroom.application.shared.CommandBus
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.Command
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandHandler
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandBus
 import java.util.concurrent.ConcurrentHashMap
 
 object InMemoryCommandBus: CommandBus {

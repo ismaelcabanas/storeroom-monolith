@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct
 
-import cabanas.garcia.ismael.storeroom.application.Command
+import cabanas.garcia.ismael.storeroom.application.shared.bus.command.Command
 
 class CreateProductCommand(productId: String, creatorId: String, productName: String): Command {
     val productId: String = productId
