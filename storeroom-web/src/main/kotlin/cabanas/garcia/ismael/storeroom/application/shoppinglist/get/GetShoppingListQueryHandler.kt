@@ -15,5 +15,5 @@ class GetShoppingListQueryHandler(private val repository: ShoppingListRepository
         ShoppingListResponse(shoppingList.id.value, mapToResponse(shoppingList.products()))
 
     private fun mapToResponse(products: List<Product>): List<ProductResponse> =
-        products.map { ProductResponse(it.id.value, it.bought) }
+        products.map { ProductResponse(it.id.value, it.name, it.bought) }
 }

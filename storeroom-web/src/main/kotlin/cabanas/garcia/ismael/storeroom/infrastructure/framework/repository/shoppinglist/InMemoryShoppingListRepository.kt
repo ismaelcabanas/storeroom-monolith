@@ -10,7 +10,7 @@ class InMemoryShoppingListRepository : ShoppingListRepository {
     override fun findById(shoppingListId: String): ShoppingList {
         var shoppingList = InMemoryDatabase.shoppingLists[ShoppingListId(shoppingListId)] ?: throw ShoppingListDoesNotExistException(shoppingListId)
 
-        InMemoryDatabase.productsShoppingList.forEach { (key, value) -> shoppingList = shoppingList.addProduct(key.value) }
+        InMemoryDatabase.productsShoppingList.forEach { (key, value) -> shoppingList = shoppingList.addProduct(key.value, value.name) }
 
         return shoppingList
     }

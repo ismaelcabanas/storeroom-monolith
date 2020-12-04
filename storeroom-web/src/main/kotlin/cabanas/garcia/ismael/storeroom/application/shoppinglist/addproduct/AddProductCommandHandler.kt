@@ -9,9 +9,8 @@ class AddProductCommandHandler(
 
     override fun handle(command: AddProductCommand) {
         val shoppingList = shoppingListRepository.findById(command.shoppingListId)
-                ?: throw ShoppingListDoesNotExistException(command.shoppingListId)
 
-        val shoppingListUpdated = shoppingList.addProduct(command.productId)
+        val shoppingListUpdated = shoppingList.addProduct(command.productId, command.productName)
 
         shoppingListRepository.save(shoppingListUpdated)
     }

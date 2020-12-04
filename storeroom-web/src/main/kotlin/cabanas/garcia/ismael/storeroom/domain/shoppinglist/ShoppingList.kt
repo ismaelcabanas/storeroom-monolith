@@ -8,14 +8,14 @@ class ShoppingList(
 
     fun products() = products
 
-    fun addProduct(productId: String): ShoppingList {
+    fun addProduct(productId: String, name: String): ShoppingList {
         val product = productOf(ProductId(productId))
 
         if (product != null) {
             throw ProductAlreadyExitsException(productId)
         }
 
-        products = products.plus(Product(ProductId((productId))))
+        products = products.plus(Product(ProductId((productId)), name))
 
         return this
     }

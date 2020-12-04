@@ -22,7 +22,7 @@ class ReplenishProductCommandHandlerShould {
     fun `save products in repository successfully`() {
         givenThatAlreadyExistAShoppingList()
 
-        sut.handle(command = AddProductCommand(SOME_SHOPPING_LIST_ID, SOME_PRODUCT_ID, SOME_USER_ID))
+        sut.handle(command = AddProductCommand(SOME_SHOPPING_LIST_ID, SOME_PRODUCT_ID, SOME_PRODUCT_NAME, SOME_USER_ID))
 
         assertThatProductWasPersistedInShoppingList()
     }
@@ -30,7 +30,7 @@ class ReplenishProductCommandHandlerShould {
     @Test
     fun `throws exception when shopping list does not exist in repository`() {
 
-        val throwable = catchThrowable { sut.handle(command = AddProductCommand(SOME_SHOPPING_LIST_ID, SOME_PRODUCT_ID, SOME_USER_ID)) }
+        val throwable = catchThrowable { sut.handle(command = AddProductCommand(SOME_SHOPPING_LIST_ID, SOME_PRODUCT_ID, SOME_PRODUCT_NAME, SOME_USER_ID)) }
 
         assertThat(throwable).isInstanceOf(ShoppingListDoesNotExistException::class.java)
     }
@@ -49,6 +49,7 @@ class ReplenishProductCommandHandlerShould {
         const val SOME_SHOPPING_LIST_ID = "some shopping list id"
         const val SOME_STOREROOM_ID = "some storeroom id"
         const val SOME_PRODUCT_ID = "some product id"
+        const val SOME_PRODUCT_NAME = "some product name"
         const val SOME_USER_ID = "some owner id"
     }
 }

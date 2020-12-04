@@ -44,12 +44,13 @@ class ShoppingListAcceptanceTest {
                 .log().all()
                 .assertThat(MockMvcResultMatchers.status().isOk)
                 .body("products[0].id", equalTo(SOME_PRODUCT_ID))
+                .body("products[0].name", equalTo(SOME_PRODUCT_NAME))
                 .body("products[0].bought", equalTo(false))
     }
 
     private fun givenShoppingListWithProducts() {
         InMemoryDatabase.shoppingLists[ShoppingListId(SOME_SHOPPING_LIST_ID)] = ShoppingList(ShoppingListId(SOME_SHOPPING_LIST_ID), StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID))
-        InMemoryDatabase.productsShoppingList[ProductId(SOME_PRODUCT_ID)] = Product(ProductId(SOME_PRODUCT_ID), false)
+        InMemoryDatabase.productsShoppingList[ProductId(SOME_PRODUCT_ID)] = Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME, false)
     }
 
     companion object {
@@ -58,5 +59,6 @@ class ShoppingListAcceptanceTest {
         private const val SOME_SHOPPING_LIST_ID = "some shopping list id"
 
         private const val SOME_PRODUCT_ID = "some product id"
+        private const val SOME_PRODUCT_NAME = "some product name"
     }
 }
