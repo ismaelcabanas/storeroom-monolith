@@ -22,40 +22,52 @@ class PostStoreroomControllerShould {
     @Test
     fun `return 201 when post a valid storeroom`() {
         RestAssuredMockMvc.given()
-                .contentType("application/json")
-                .header("User-Id", SOME_STOREROOM_USER_ID)
-                .body("""{
-                          "id": "$SOME_STOREROOM_REQUEST_ID",
-                          "name": "$SOME_STOREROOM_REQUEST_NAME"         
-                        }"""
-                )
+                .contentType(JSON_CONTENT_TYPE)
+                .header(USER_HEADER, SOME_STOREROOM_USER_ID)
+                .body(validCreateStoreroomRequestBody())
                 .`when`()
-                .post("/v1/storerooms")
+                .post(POST_STOREROOM_PATH)
                 .then()
                 .assertThat(MockMvcResultMatchers.status().isCreated)
+    }
+
+    @Test
+    fun `return location header when post a valid storeroom`() {
+        RestAssuredMockMvc.given()
+                .contentType(JSON_CONTENT_TYPE)
+                .header(USER_HEADER, SOME_STOREROOM_USER_ID)
+                .body(validCreateStoreroomRequestBody())
+                .`when`()
+                .post(POST_STOREROOM_PATH)
+                .then()
                 .header("Location", Matchers.equalTo("http://localhost/v1/storerooms/some%2520storeroom%2520request%2520id"))
     }
 
     @Test
     fun `dispatch command when post a valid storeroom`() {
         RestAssuredMockMvc.given()
-                .contentType("application/json")
-                .header("User-Id", SOME_STOREROOM_USER_ID)
-                .body("""{
-                          "id": "$SOME_STOREROOM_REQUEST_ID",
-                          "name": "$SOME_STOREROOM_REQUEST_NAME"         
-                        }"""
-                )
+                .contentType(JSON_CONTENT_TYPE)
+                .header(USER_HEADER, SOME_STOREROOM_USER_ID)
+                .body(validCreateStoreroomRequestBody())
                 .`when`()
-                .post("/v1/storerooms")
+                .post(POST_STOREROOM_PATH)
 
         commandBus.verifyCommandWasDispatched(CreateStoreroomCommand(SOME_STOREROOM_REQUEST_ID, SOME_STOREROOM_USER_ID, SOME_STOREROOM_REQUEST_NAME))
     }
+
+    private fun validCreateStoreroomRequestBody() = """{
+                          "id": "$SOME_STOREROOM_REQUEST_ID",
+                          "name": "$SOME_STOREROOM_REQUEST_NAME"         
+                        }"""
 
     companion object {
         private const val SOME_STOREROOM_REQUEST_ID = "some storeroom request id"
         private const val SOME_STOREROOM_REQUEST_NAME = "some storeroom request name"
 
         private const val SOME_STOREROOM_USER_ID = "some user id"
+
+        private const val JSON_CONTENT_TYPE = "application/json"
+        private const val USER_HEADER = "User-Id"
+        private const val POST_STOREROOM_PATH = "/v1/storerooms"
     }
 }

@@ -20,15 +20,11 @@ class PostReplenishStoreroomControllerShould {
     @Test
     fun `return 200 when post replenish product to a given storeroom`() {
         RestAssuredMockMvc.given()
-                .contentType("application/json")
-                .header("User-Id", SOME_STOREROOM_USER_ID)
-                .body("""{
-                          "productId": "$SOME_PRODUCT_REQUEST_ID",
-                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
-                        }"""
-                )
+                .contentType(JSON_CONTENT_TYPE)
+                .header(USER_HEADER, SOME_STOREROOM_USER_ID)
+                .body(validReplenishStoreroomRequestBody())
                 .`when`()
-                .post("/v1/storerooms/$SOME_STOREROOM_ID/replenish")
+                .post(POST_STOREROOM_REPLENISH_PATH)
                 .then()
                 .assertThat(MockMvcResultMatchers.status().isOk)
     }
@@ -36,18 +32,19 @@ class PostReplenishStoreroomControllerShould {
     @Test
     fun `dispatch command when post replenish product to a given storeroom`() {
         RestAssuredMockMvc.given()
-                .contentType("application/json")
-                .header("User-Id", SOME_STOREROOM_USER_ID)
-                .body("""{
-                          "productId": "$SOME_PRODUCT_REQUEST_ID",
-                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
-                        }"""
-                )
+                .contentType(JSON_CONTENT_TYPE)
+                .header(USER_HEADER, SOME_STOREROOM_USER_ID)
+                .body(validReplenishStoreroomRequestBody())
                 .`when`()
-                .post("/v1/storerooms/$SOME_STOREROOM_ID/replenish")
+                .post(POST_STOREROOM_REPLENISH_PATH)
 
         commandBus.verifyCommandWasDispatched(ReplenishProductCommand(SOME_STOREROOM_ID, SOME_PRODUCT_REQUEST_ID, SOME_PRODUCT_REQUEST_QUANTITY, SOME_STOREROOM_USER_ID))
     }
+
+    private fun validReplenishStoreroomRequestBody() = """{
+                          "productId": "$SOME_PRODUCT_REQUEST_ID",
+                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
+                        }"""
 
     companion object {
         private const val SOME_STOREROOM_ID = "some storeroom id"
@@ -55,6 +52,10 @@ class PostReplenishStoreroomControllerShould {
         private const val SOME_PRODUCT_REQUEST_QUANTITY = 5
 
         private const val SOME_STOREROOM_USER_ID = "some user id"
+
+        private const val JSON_CONTENT_TYPE = "application/json"
+        private const val USER_HEADER = "User-Id"
+        private const val POST_STOREROOM_REPLENISH_PATH = "/v1/storerooms/$SOME_STOREROOM_ID/replenish"
 
     }
 }
