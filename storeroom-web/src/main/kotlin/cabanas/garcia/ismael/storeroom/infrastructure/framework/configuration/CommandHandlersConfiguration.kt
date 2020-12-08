@@ -8,6 +8,7 @@ import cabanas.garcia.ismael.storeroom.domain.productcatalog.api.CreateProduct
 import cabanas.garcia.ismael.storeroom.domain.shared.eventbus.EventBus
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomFactory
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -19,6 +20,7 @@ class CommandHandlersConfiguration {
     @Bean
     fun createStoreroomCommandHandler(
             storeroomFactory: StoreroomFactory,
+            @Qualifier("jpaStoreroomRepository")
             storeroomRepository: StoreroomRepository,
             eventBus: EventBus
     ) = CreateStoreroomCommandHandler(storeroomFactory, storeroomRepository, eventBus)

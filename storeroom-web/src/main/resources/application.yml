@@ -1,6 +1,26 @@
+docker:
+  host: "${DOCKER_IP:localhost}"
+
 spring:
+  main:
+    banner-mode: "OFF"
   output:
     ansi.enabled: always
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: "jdbc:postgresql://${docker.host}:${postgres.port:5432}/postgres?currentSchema=storeroom"
+    username: postgres
+    password: postgres
+    hikari:
+      maximum-pool-size: 30
+      pool-name: storeroom
+      connection-timeout: 500
+      idle-timeout: 30000
+      minimum-idle: 5
+  flyway:
+    locations: classpath:db/migration
+    schemas: storeroom
 
 server:
-  port: 7777
+  port: 8000
