@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom
+package cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom.jpa
 
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomMother
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
@@ -40,11 +40,12 @@ internal class JpaStoreroomRepositoryShould {
 
     companion object {
         @Container
-        val container = PostgreSQLContainer<Nothing>("postgres:10.9").apply {
-            withDatabaseName("storeroom")
-            withUsername("postgres")
-            withPassword("postgres")
-        }
+        val container = PostgreSQLContainer<Nothing>("postgres:10.9")
+                .apply {
+                    withDatabaseName("storeroom")
+                    withUsername("postgres")
+                    withPassword("postgres")
+                }
 
         @JvmStatic
         @DynamicPropertySource
