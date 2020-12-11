@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller
 
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
+import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.productcatalog.jpa.entity.ProductEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
@@ -37,7 +37,7 @@ class HtmlController(private val repository: ProductRepository) {
         return "product"
     }
 
-    fun Product.render() = RenderedProduct(id.toString(), name)
+    fun ProductEntity.render() = RenderedProduct(id.toString(), name)
 
     data class RenderedProduct(
             val id: String,

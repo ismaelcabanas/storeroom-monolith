@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.infrastructure.framework
 
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.entity.Product
+import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.productcatalog.jpa.entity.ProductEntity
 import com.ninjasquad.springmockk.MockkBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -18,8 +18,8 @@ class ApiRestTests(@Autowired val mockMvc: MockMvc) {
 
     //@Test
     fun `List products`() {
-        val canOfCorn = Product(UUID.randomUUID(), "Lata de maíz")
-        val canOfPees = Product(UUID.randomUUID(), "Lata de guisantes")
+        val canOfCorn = ProductEntity(UUID.randomUUID(), UUID.randomUUID(),"Lata de maíz")
+        val canOfPees = ProductEntity(UUID.randomUUID(), UUID.randomUUID(),"Lata de guisantes")
         //every { productRepository.findAll() } returns listOf(canOfCorn, canOfPees)
         mockMvc.perform(get("/api/v1/products/").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)

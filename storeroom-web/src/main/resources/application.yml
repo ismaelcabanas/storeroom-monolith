@@ -9,7 +9,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: "jdbc:postgresql://${docker.host}:${postgres.port:5432}/postgres?currentSchema=storeroom"
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=storeroom"
     username: postgres
     password: postgres
     hikari:

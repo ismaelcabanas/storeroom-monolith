@@ -4,6 +4,7 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomMother
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.StoreroomWebApplication
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -60,11 +61,6 @@ internal class JpaStoreroomRepositoryShould {
     @Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, statements = ["DELETE FROM STOREROOM"])
     internal fun `configure system under test`() {
 
-    }
-
-    @AfterEach
-    internal fun `tear down`() {
-        container.stop()
     }
 
     @Test

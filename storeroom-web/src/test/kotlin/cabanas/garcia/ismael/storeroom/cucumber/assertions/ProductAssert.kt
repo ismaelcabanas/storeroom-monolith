@@ -14,6 +14,6 @@ class ProductAssert(actual: Product) : AbstractAssert<ProductAssert, Product>(ac
     }
 
     infix fun `has id`(productId: String) {
-        matches({actual.id.id == productId}, "product id corresponds to productId")
+        matches({actual.id.value == productId}, "product id corresponds to productId")
     }
 }

@@ -15,9 +15,8 @@ class InMemoryProductRepository(val products: MutableMap<ProductId, Product> = C
         TODO("Not yet implemented")
     }
 
-    override fun save(product: Product): Product {
+    override fun save(product: Product) {
         products[product.id] = product
-        return product
     }
 
     override fun findByName(productName: String): Product? {

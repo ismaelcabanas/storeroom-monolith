@@ -11,7 +11,9 @@ class ProductCreator(private val productRepository: ProductRepository) : CreateP
 
         val product = Product(productDetails.id, userId, productDetails.name)
 
-        return productRepository.save(product)
+        productRepository.save(product)
+
+        return product
     }
 
     private fun existProductWithName(productName: String): Boolean {

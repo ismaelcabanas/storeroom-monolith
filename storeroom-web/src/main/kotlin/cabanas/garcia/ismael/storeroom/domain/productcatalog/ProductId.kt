@@ -1,7 +1,7 @@
 package cabanas.garcia.ismael.storeroom.domain.productcatalog
 
 class ProductId(id: String) {
-    val id: String = id
+    val value: String = id
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -9,17 +9,17 @@ class ProductId(id: String) {
 
         other as ProductId
 
-        if (id != other.id) return false
+        if (value != other.value) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        return value.hashCode()
     }
 
     override fun toString(): String {
-        return "ProductId(id='$id')"
+        return "ProductId(value='$value')"
     }
 
 
