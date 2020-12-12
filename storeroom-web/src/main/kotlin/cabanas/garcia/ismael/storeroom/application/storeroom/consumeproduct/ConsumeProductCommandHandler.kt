@@ -10,14 +10,11 @@ class ConsumeProductCommandHandler(
         private val eventBus: EventBus): CommandHandler<ConsumeProductCommand> {
 
     override fun handle(command: ConsumeProductCommand) {
-        val storeroom = storeroomRepository.findById(command.storeroomId)
-                ?: throw StoreroomDoesNotExistException(command.storeroomId)
-
-        val storeroomUpdated = storeroom.consumeProduct(command.productId, command.userId, command.quantity)
-
-        storeroomRepository.save(storeroomUpdated)
-
-        eventBus.publish(storeroomUpdated.events())
+        storeroomRepository.findById(command.storeroomId)?.let { storeroom ->
+            val storeroomUpdated = storeroom.consumeProduct(command.productId, command.userId, command.quantity)
+            storeroomRepository.save(storeroomUpdated)
+            eventBus.publish(storeroomUpdated.events())
+        } ?: throw StoreroomDoesNotExistException(command.storeroomId)
     }
 
 }

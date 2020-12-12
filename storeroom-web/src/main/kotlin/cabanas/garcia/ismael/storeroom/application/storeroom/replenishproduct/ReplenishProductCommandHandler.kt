@@ -10,14 +10,10 @@ class ReplenishProductCommandHandler(
         private val eventBus: EventBus): CommandHandler<ReplenishProductCommand> {
 
     override fun handle(command: ReplenishProductCommand) {
-        val storeroom = storeroomRepository.findById(command.storeroomId)
-                ?: throw StoreroomDoesNotExistException(command.storeroomId)
-
-        val storeroomUpdated = storeroom.addProduct(command.productId, command.userId, command.quantity)
-
-        storeroomRepository.save(storeroomUpdated)
-
-        eventBus.publish(storeroomUpdated.events())
+        storeroomRepository.findById(command.storeroomId)?.let { storeroom ->
+            val storeroomUpdated = storeroom.addProduct(command.productId, command.userId, command.quantity)
+            storeroomRepository.save(storeroomUpdated)
+            eventBus.publish(storeroomUpdated.events())
+        } ?: throw StoreroomDoesNotExistException(command.storeroomId)
     }
-
 }
