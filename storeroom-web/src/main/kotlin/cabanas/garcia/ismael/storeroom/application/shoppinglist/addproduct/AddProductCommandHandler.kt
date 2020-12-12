@@ -5,14 +5,12 @@ import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListDoesNotEx
 import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListRepository
 
 class AddProductCommandHandler(
-        private val shoppingListRepository: ShoppingListRepository): CommandHandler<AddProductCommand> {
+       private val shoppingListRepository: ShoppingListRepository): CommandHandler<AddProductCommand> {
 
     override fun handle(command: AddProductCommand) {
-        val shoppingList = shoppingListRepository.findById(command.shoppingListId)
-
-        val shoppingListUpdated = shoppingList.addProduct(command.productId, command.productName)
-
-        shoppingListRepository.save(shoppingListUpdated)
+        shoppingListRepository.findById(command.shoppingListId)?.let { shoppingList ->
+            val shoppingListUpdated = shoppingList.addProduct(command.productId, command.productName)
+            shoppingListRepository.save(shoppingListUpdated)
+        }
     }
-
 }

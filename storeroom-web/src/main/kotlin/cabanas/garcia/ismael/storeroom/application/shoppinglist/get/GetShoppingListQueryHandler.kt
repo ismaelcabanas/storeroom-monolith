@@ -9,10 +9,14 @@ import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListRepositor
 class GetShoppingListQueryHandler(private val repository: ShoppingListRepository): QueryHandler<GetShoppingListQuery, ShoppingListResponse> {
 
     override fun handle(query: GetShoppingListQuery): ShoppingListResponse =
-            mapToResponse(repository.findById(query.shoppingListId))
+            mapToResponse(repository.findById(query.shoppingListId)) ?: ShoppingListResponse(query.shoppingListId, emptyList())
 
-    private fun mapToResponse(shoppingList: ShoppingList) =
-        ShoppingListResponse(shoppingList.id.value, mapToResponse(shoppingList.products()))
+    private fun mapToResponse(shoppingList: ShoppingList?): ShoppingListResponse? {
+        return if (shoppingList == null) {
+            null
+        } else
+            ShoppingListResponse(shoppingList.id.value, mapToResponse(shoppingList.products()))
+    }
 
     private fun mapToResponse(products: List<Product>): List<ProductResponse> =
         products.map { ProductResponse(it.id.value, it.name, it.bought) }

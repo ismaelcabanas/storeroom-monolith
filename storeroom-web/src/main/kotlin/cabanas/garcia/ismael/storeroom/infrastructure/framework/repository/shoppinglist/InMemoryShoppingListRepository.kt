@@ -7,7 +7,7 @@ import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListRepositor
 import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
 
 class InMemoryShoppingListRepository : ShoppingListRepository {
-    override fun findById(shoppingListId: String): ShoppingList {
+    override fun findById(shoppingListId: String): ShoppingList? {
         var shoppingList = InMemoryDatabase.shoppingLists[ShoppingListId(shoppingListId)] ?: throw ShoppingListDoesNotExistException(shoppingListId)
 
         InMemoryDatabase.productsShoppingList.forEach { (key, value) -> shoppingList = shoppingList.addProduct(key.value, value.name) }
