@@ -1,4 +1,4 @@
-package cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom.jpa.entity
+package cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom.jpa
 
 import java.util.*
 import javax.persistence.Column
@@ -8,7 +8,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "STOREROOM")
-class StoreroomEntity(
+class JpaStoreroom(
         @Id
         var id: UUID,
         @Column
