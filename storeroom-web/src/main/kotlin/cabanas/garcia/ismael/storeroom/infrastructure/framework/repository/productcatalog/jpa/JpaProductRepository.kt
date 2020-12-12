@@ -4,8 +4,6 @@ import cabanas.garcia.ismael.storeroom.domain.productcatalog.Product
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductId
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.UserId
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.productcatalog.jpa.entity.ProductEntity
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.productcatalog.jpa.spring.SpringJpaProductRepository
 import java.util.UUID
 import java.util.Optional
 
@@ -23,7 +21,7 @@ class JpaProductRepository(private val springJpaRepository: SpringJpaProductRepo
     override fun findByName(productName: String): Product? =
         springJpaRepository.findByName(productName)?.let { toDomain(it) }
 
-    private fun toDomain(entity: Optional<ProductEntity>): Product? {
+    private fun toDomain(entity: Optional<JpaProduct>): Product? {
         return if (!entity.isPresent) {
             null
         } else {
@@ -31,12 +29,12 @@ class JpaProductRepository(private val springJpaRepository: SpringJpaProductRepo
         }
     }
 
-    private fun toDomain(entity: ProductEntity): Product =
+    private fun toDomain(entity: JpaProduct): Product =
         Product(ProductId(entity.id.toString()), UserId(entity.creatorId.toString()), entity.name)
 
 
     private fun toEntity(product: Product) =
-            ProductEntity(UUID.fromString(product.id.value), UUID.fromString(product.creatorId.value), product.name)
+            JpaProduct(UUID.fromString(product.id.value), UUID.fromString(product.creatorId.value), product.name)
     /*
     override fun save(product: Product) {
         springJpaRepository.save(product)
