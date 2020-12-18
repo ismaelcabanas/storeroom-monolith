@@ -39,6 +39,11 @@ testSets {
 	acceptanceTest { dirName = 'acceptance-test' }
 }
 
+configurations {
+	integrationTestImplementation.extendsFrom testImplementation
+	acceptanceTestImplementation.extendsFrom integrationTestImplementation
+}
+
 dependencies {
 	// Spring dependencies
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
@@ -80,12 +85,24 @@ dependencies {
 	// Integration test
 	integrationTestImplementation(sourceSets.test.output)
 	integrationTestImplementation("org.awaitility:awaitility:3.1.5")
-	testImplementation "org.testcontainers:junit-jupiter:${testcontainerVersion}"
+	integrationTestImplementation "org.testcontainers:junit-jupiter:${testcontainerVersion}"
 	integrationTestImplementation("org.testcontainers:testcontainers:${testcontainerVersion}")
 	integrationTestImplementation "org.testcontainers:postgresql:${testcontainerVersion}"
+
+	// Acceptance test
+	acceptanceTestImplementation(sourceSets.test.output)
+	acceptanceTestImplementation(sourceSets.integrationTest.output)
 }
 
 tasks.withType(Test) {
+	useJUnitPlatform()
+}
+
+integrationTest {
+	useJUnitPlatform()
+}
+
+acceptanceTest {
 	useJUnitPlatform()
 }
 

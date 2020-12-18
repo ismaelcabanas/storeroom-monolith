@@ -12,24 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.test.jdbc.JdbcTestUtils
 import org.springframework.test.web.servlet.MockMvc
+import java.util.*
 
-@ExtendWith(SpringExtension::class)
-@SpringBootTest(
-        classes = [StoreroomWebApplication::class],
-        properties = ["spring.profiles.active=acceptance-test"]
-)
-@AutoConfigureMockMvc
-class StoreroomAcceptanceTest {
-    @Autowired
-    private lateinit var mvc: MockMvc
-
-    @BeforeEach
-    fun setUp() {
-        InMemoryDatabase.clean()
-        RestAssuredMockMvc.mockMvc(mvc)
-    }
-
+class StoreroomAcceptanceTest : AcceptanceTest() {
     @Test
     fun `create storeroom successfully`() {
         RestAssuredMockMvc.given()
@@ -96,20 +83,24 @@ class StoreroomAcceptanceTest {
     }
 
     private fun assertThatStoreroomWasCreatedWithoutProducts() {
-        val storeroom = InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_REQUEST_ID)]
-        assertThat(storeroom!!).isNotNull
-        assertThat(storeroom.name).isEqualTo(SOME_STOREROOM_REQUEST_NAME)
-        assertThat(storeroom.ownerId.value).isEqualTo(SOME_STOREROOM_USER_ID)
-        assertThat(storeroom.products()).isEmpty()
+        assertThat(
+                JdbcTestUtils.countRowsInTableWhere(
+                        jdbcTemplate,
+                        "STOREROOM",
+                        "ID = '" + SOME_STOREROOM_REQUEST_ID + "'"
+                                + " AND OWNER_ID = '" + SOME_STOREROOM_USER_ID + "'"
+                                + " AND NAME = '" + SOME_STOREROOM_REQUEST_NAME + "'"
+                )
+        ).isEqualTo(1)
     }
 
     companion object {
-        private const val SOME_STOREROOM_REQUEST_ID = "some storeroom request id"
+        private val SOME_STOREROOM_REQUEST_ID = UUID.randomUUID().toString()
         private const val SOME_STOREROOM_REQUEST_NAME = "some storeroom request name"
 
         private const val SOME_PRODUCT_REQUEST_ID = "some product request id"
         private const val SOME_PRODUCT_REQUEST_QUANTITY = 5
 
-        private const val SOME_STOREROOM_USER_ID = "some user id"
+        private val SOME_STOREROOM_USER_ID = UUID.randomUUID().toString()
     }
 }

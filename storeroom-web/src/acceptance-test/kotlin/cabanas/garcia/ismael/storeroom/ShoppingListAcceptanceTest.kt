@@ -1,36 +1,13 @@
-package cabanas.garcia.ismael.shoppinglist
+package cabanas.garcia.ismael.storeroom
 
 import cabanas.garcia.ismael.storeroom.domain.shoppinglist.*
 import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.StoreroomWebApplication
 import io.restassured.module.mockmvc.RestAssuredMockMvc
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.hamcrest.Matchers.equalTo
+import org.junit.jupiter.api.Test
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@ExtendWith(SpringExtension::class)
-@SpringBootTest(
-        classes = [StoreroomWebApplication::class],
-        properties = ["spring.profiles.active=acceptance-test"]
-)
-@AutoConfigureMockMvc
-class ShoppingListAcceptanceTest {
-    @Autowired
-    private lateinit var mvc: MockMvc
-
-    @BeforeEach
-    fun setUp() {
-        InMemoryDatabase.clean()
-        RestAssuredMockMvc.mockMvc(mvc)
-    }
-
+class ShoppingListAcceptanceTest : AcceptanceTest() {
     @Test
     fun `get shopping list`() {
         givenShoppingListWithProducts()
