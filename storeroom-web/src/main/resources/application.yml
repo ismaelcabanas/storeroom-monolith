@@ -9,9 +9,9 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=storeroom"
-    username: postgres
-    password: postgres
+    url: "jdbc:postgresql://localhost:5432/storeroom?currentSchema=storeroom"
+    username: "postgres"
+    password: "postgres"
     hikari:
       maximum-pool-size: 30
       pool-name: storeroom
@@ -19,8 +19,8 @@ spring:
       idle-timeout: 30000
       minimum-idle: 5
   flyway:
-    locations: classpath:db/migration
-    schemas: storeroom
+    enabled: true
+    locations: classpath:db/migration, classpath:db/dataset
 
 server:
   port: 8000
