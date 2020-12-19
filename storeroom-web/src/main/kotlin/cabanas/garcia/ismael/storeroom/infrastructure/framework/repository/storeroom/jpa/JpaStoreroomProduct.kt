@@ -7,11 +7,12 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "STOREROOM")
-data class JpaStoreroom(
+@Table(name = "STOREROOM_PRODUCT")
+data class JpaStoreroomProduct(
         @Id
         val id: UUID,
         @Column
-        val ownerId: UUID,
+        val storeroomId: UUID,
         @Column
-        val name: String)
+        val stock: Int
+)

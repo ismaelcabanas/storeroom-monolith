@@ -20,20 +20,19 @@ class CommandHandlersConfiguration {
     @Bean
     fun createStoreroomCommandHandler(
             storeroomFactory: StoreroomFactory,
-            @Qualifier("jpaStoreroomRepository")
-            storeroomRepository: StoreroomRepository,
+            @Qualifier("jpaStoreroomRepository") storeroomRepository: StoreroomRepository,
             eventBus: EventBus
     ) = CreateStoreroomCommandHandler(storeroomFactory, storeroomRepository, eventBus)
 
     @Bean
     fun replenishProductCommandHandler(
-            storeroomRepository: StoreroomRepository,
+            @Qualifier("jpaStoreroomRepository") storeroomRepository: StoreroomRepository,
             eventBus: EventBus
     ) = ReplenishProductCommandHandler(storeroomRepository, eventBus)
 
     @Bean
     fun consumeProductCommandHandler(
-            storeroomRepository: StoreroomRepository,
+            @Qualifier("jpaStoreroomRepository") storeroomRepository: StoreroomRepository,
             eventBus: EventBus
     ) = ConsumeProductCommandHandler(storeroomRepository, eventBus)
 }

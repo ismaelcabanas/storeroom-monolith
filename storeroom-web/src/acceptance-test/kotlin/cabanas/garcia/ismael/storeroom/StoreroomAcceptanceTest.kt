@@ -1,95 +1,107 @@
 package cabanas.garcia.ismael.storeroom
 
-import cabanas.garcia.ismael.storeroom.domain.storeroom.*
-import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.StoreroomWebApplication
+import cabanas.garcia.ismael.storeroom.domain.storeroom.ProductMother
+import cabanas.garcia.ismael.storeroom.domain.storeroom.Storeroom
+import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomMother
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.jdbc.JdbcTestUtils
-import org.springframework.test.web.servlet.MockMvc
-import java.util.*
+import java.util.UUID
 
 class StoreroomAcceptanceTest : AcceptanceTest() {
+
     @Test
     fun `create storeroom successfully`() {
-        RestAssuredMockMvc.given()
-                .contentType("application/json")
-                .header("User-Id", SOME_STOREROOM_USER_ID)
-                .body("""{
-                          "id": "$SOME_STOREROOM_REQUEST_ID",
-                          "name": "$SOME_STOREROOM_REQUEST_NAME"         
-                        }"""
-                )
-                .`when`()
-                .post("/v1/storerooms")
+        val storeroom = StoreroomMother.emptyStoreroom()
 
-        assertThatStoreroomWasCreatedWithoutProducts()
+        createStoreroom(storeroom)
+
+        assertThatStoreroomWasCreatedWithoutProducts(storeroom)
     }
 
     @Test
     fun `replenish products to storeroom successfully`() {
-        val currentStock = 4
-        givenStoreroomHasProductWithStock(currentStock)
+        val product = ProductMother.aProductWithStock(4)
+        val storeroom = StoreroomMother.aStoreroomWithProducts()
+        createStoreroom(storeroom)
 
-        RestAssuredMockMvc.given()
-                .contentType("application/json")
-                .header("User-Id", SOME_STOREROOM_USER_ID)
-                .body("""{
-                          "productId": "$SOME_PRODUCT_REQUEST_ID",
-                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
-                        }"""
-                )
-                .`when`()
-                .post("/v1/storerooms/$SOME_STOREROOM_REQUEST_ID/replenish")
+        replenishProductWithQuantity(storeroom, product.id.value, product.stock())
 
-        assertThatProductInStoreroomHasStock(currentStock + SOME_PRODUCT_REQUEST_QUANTITY)
+        assertThatProductInStoreroomHasStock(storeroom.id.value, product.id.value, 4)
     }
 
     @Test
     fun `consume products from storeroom successfully`() {
-        val currentStock = 9
-        givenStoreroomHasProductWithStock(currentStock)
+        val product = ProductMother.aProductWithStock(9)
+        val storeroom = StoreroomMother.aStoreroomWithProducts()
+        createStoreroom(storeroom)
+        replenishProductWithQuantity(storeroom, product.id.value, product.stock())
 
+        consumeQuantityProduct(storeroom, product.id.value, 5)
+
+        assertThatProductInStoreroomHasStock(storeroom.id.value, product.id.value,4)
+    }
+
+    private fun consumeQuantityProduct(storeroom: Storeroom, productId: String, quantity: Int) {
         RestAssuredMockMvc.given()
                 .contentType("application/json")
-                .header("User-Id", SOME_STOREROOM_USER_ID)
+                .header("User-Id", storeroom.ownerId.value)
                 .body("""{
-                          "productId": "$SOME_PRODUCT_REQUEST_ID",
-                          "quantity": "$SOME_PRODUCT_REQUEST_QUANTITY"         
+                          "productId": "$productId",
+                          "quantity": "$quantity"         
                         }"""
                 )
                 .`when`()
-                .post("/v1/storerooms/$SOME_STOREROOM_REQUEST_ID/consume")
-
-        assertThatProductInStoreroomHasStock(currentStock - SOME_PRODUCT_REQUEST_QUANTITY)
+                .post("/v1/storerooms/${storeroom.id.value}/consume")
     }
 
-    private fun givenStoreroomHasProductWithStock(currentStock: Int) {
-        InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_REQUEST_ID)] = Storeroom(StoreroomId(SOME_STOREROOM_REQUEST_ID), UserId(SOME_STOREROOM_USER_ID), SOME_STOREROOM_REQUEST_NAME)
-        InMemoryDatabase.products[ProductId(SOME_PRODUCT_REQUEST_ID)] = Product(ProductId(SOME_PRODUCT_REQUEST_ID), Stock(currentStock))
+    private fun createStoreroom(storeroom: Storeroom) {
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .header("User-Id", storeroom.ownerId.value)
+                .body("""{
+                          "id": "${storeroom.id.value}",
+                          "name": "${storeroom.name}"         
+                        }"""
+                )
+                .`when`()
+                .post("/v1/storerooms")
     }
 
-    private fun assertThatProductInStoreroomHasStock(expectedStock: Int) {
-        val storeroomProduct = InMemoryDatabase.products[ProductId(SOME_PRODUCT_REQUEST_ID)]
-        assertThat(storeroomProduct!!).isNotNull
-        assertThat(storeroomProduct.stock.value).isEqualTo(expectedStock)
+    private fun replenishProductWithQuantity(storeroom: Storeroom, productId: String, quantity: Int) {
+        RestAssuredMockMvc.given()
+                .contentType("application/json")
+                .header("User-Id", storeroom.ownerId.value)
+                .body("""{
+                          "productId": "$productId",
+                          "quantity": "$quantity"         
+                        }"""
+                )
+                .`when`()
+                .post("/v1/storerooms/${storeroom.id.value}/replenish")
     }
 
-    private fun assertThatStoreroomWasCreatedWithoutProducts() {
+    private fun assertThatProductInStoreroomHasStock(expectedStoreroomId: String, expectedProductId: String, expectedStock: Int) {
+        assertThat(
+                JdbcTestUtils.countRowsInTableWhere(
+                        jdbcTemplate,
+                        "STOREROOM_PRODUCT",
+                        "ID = '$expectedProductId'"
+                                + " AND STOREROOM_ID = '$expectedStoreroomId'"
+                                + " AND STOCK = $expectedStock"
+                )
+        ).isEqualTo(1)
+    }
+
+    private fun assertThatStoreroomWasCreatedWithoutProducts(expected: Storeroom) {
         assertThat(
                 JdbcTestUtils.countRowsInTableWhere(
                         jdbcTemplate,
                         "STOREROOM",
-                        "ID = '" + SOME_STOREROOM_REQUEST_ID + "'"
-                                + " AND OWNER_ID = '" + SOME_STOREROOM_USER_ID + "'"
-                                + " AND NAME = '" + SOME_STOREROOM_REQUEST_NAME + "'"
+                        "ID = '" + expected.id.value + "'"
+                                + " AND OWNER_ID = '" + expected.ownerId.value + "'"
+                                + " AND NAME = '" + expected.name + "'"
                 )
         ).isEqualTo(1)
     }
@@ -98,8 +110,7 @@ class StoreroomAcceptanceTest : AcceptanceTest() {
         private val SOME_STOREROOM_REQUEST_ID = UUID.randomUUID().toString()
         private const val SOME_STOREROOM_REQUEST_NAME = "some storeroom request name"
 
-        private const val SOME_PRODUCT_REQUEST_ID = "some product request id"
-        private const val SOME_PRODUCT_REQUEST_QUANTITY = 5
+        private val SOME_PRODUCT_REQUEST_ID = UUID.randomUUID().toString()
 
         private val SOME_STOREROOM_USER_ID = UUID.randomUUID().toString()
     }

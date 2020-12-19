@@ -1,21 +1,20 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
-import java.util.*
+import java.util.UUID
 
 object StoreroomMother {
-    private val ID = UUID.randomUUID().toString()
-    private val OWNER_ID = UUID.randomUUID().toString()
-    private const val NAME = "some storeroom name"
+    fun aStoreroomWithProducts(products: Set<Product>) =
+        Storeroom(StoreroomId(
+                UUID.randomUUID().toString()),
+                UserId(UUID.randomUUID().toString()),
+                ProductNameMother.random(),
+                products
+        )
 
-    fun createStoreroomWithProducts(products: Set<Product>): Storeroom {
-        return Storeroom(StoreroomId(UUID.randomUUID().toString()), UserId(UUID.randomUUID().toString()), "Test Storeroom", products)
-    }
+    fun aStoreroomWithProducts() =
+        aStoreroomWithProducts(setOf(ProductMother.aProduct()))
 
-    fun emptyStoreroom(): Storeroom {
-        return createStoreroomWithProducts(emptySet())
-    }
-
-    fun aStoreroom() =
-            Storeroom(StoreroomId(ID), UserId(OWNER_ID), NAME)
+    fun emptyStoreroom() =
+        aStoreroomWithProducts(emptySet())
 
 }

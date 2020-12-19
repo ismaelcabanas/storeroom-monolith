@@ -51,7 +51,7 @@ class StoreroomShould {
 
     @Test
     fun `add new stock to existent products to storeroom`() {
-        val sut = StoreroomMother.createStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
+        val sut = StoreroomMother.aStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
         val newStock = 5
 
         val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, newStock)
@@ -61,7 +61,7 @@ class StoreroomShould {
 
     @Test
     fun `consume stock from existent product in storeroom`() {
-        val sut = StoreroomMother.createStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
+        val sut = StoreroomMother.aStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
         val consumedStock = 2
 
         val actual = sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
@@ -82,7 +82,7 @@ class StoreroomShould {
 
     @Test
     fun `throw consume product exceeded error when product stock in storeroom is less than stock to consume`() {
-        val sut = StoreroomMother.createStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
+        val sut = StoreroomMother.aStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
         val consumedStock = 4
 
         val throwable = catchThrowable { sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock) }
