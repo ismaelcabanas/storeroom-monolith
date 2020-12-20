@@ -50,7 +50,7 @@ internal class JpaStoreroomRepositoryShould : IntegrationTest() {
             ]
     )
     fun `find a storeroom from database`() {
-        val storeroom = repository.findById(SOME_STOREROOM_ID)!!
+        val storeroom = repository.findBy(StoreroomId(SOME_STOREROOM_ID))!!
 
         assertThat(storeroom.name).isEqualTo(SOME_NAME)
         assertThat(storeroom.products()).isNotEmpty

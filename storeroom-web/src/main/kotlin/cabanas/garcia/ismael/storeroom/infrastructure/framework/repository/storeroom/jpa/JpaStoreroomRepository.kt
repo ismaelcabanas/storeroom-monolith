@@ -7,9 +7,9 @@ class JpaStoreroomRepository(
         private val storeroomJpaRepository: SpringJpaStoreroomRepository,
         private val productJpaRepository: SpringJpaStoreroomProductRepository): StoreroomRepository {
 
-    override fun findById(id: String): Storeroom? =
-            storeroomJpaRepository.findById(UUID.fromString(id))
-                    .map { toDomain(it, productJpaRepository.findByStoreroomId(UUID.fromString(id))) }
+    override fun findBy(id: StoreroomId): Storeroom? =
+            storeroomJpaRepository.findById(UUID.fromString(id.value))
+                    .map { toDomain(it, productJpaRepository.findByStoreroomId(UUID.fromString(id.value))) }
                     .orElse(null)
 
     override fun save(storeroom: Storeroom) {
