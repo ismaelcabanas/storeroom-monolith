@@ -8,7 +8,9 @@ class JpaStoreroomRepository(
         private val productJpaRepository: SpringJpaStoreroomProductRepository): StoreroomRepository {
 
     override fun findById(id: String): Storeroom? =
-            storeroomJpaRepository.findById(UUID.fromString(id)).map { toDomain(it) }.orElse(null)
+            storeroomJpaRepository.findById(UUID.fromString(id))
+                    .map { toDomain(it, productJpaRepository.findByStoreroomId(UUID.fromString(id))) }
+                    .orElse(null)
 
     override fun save(storeroom: Storeroom) {
         storeroomJpaRepository.save(toEntity(storeroom))
@@ -22,9 +24,19 @@ class JpaStoreroomRepository(
                     domain.stock()
             )
 
-    private fun toDomain(entity: JpaStoreroom): Storeroom? =
-            Storeroom(StoreroomId(entity.id.toString()), UserId(entity.ownerId.toString()), entity.name)
-
     private fun toEntity(domain: Storeroom) =
             JpaStoreroom(UUID.fromString(domain.id.value), UUID.fromString(domain.ownerId.value), domain.name)
+
+    private fun toDomain(entity: JpaStoreroom, productsEntity: List<JpaStoreroomProduct>): Storeroom? =
+            Storeroom(
+                    StoreroomId(entity.id.toString()),
+                    UserId(entity.ownerId.toString()),
+                    entity.name,
+                    productsEntity
+                            .map { toDomain(it) }
+                            .toSet()
+            )
+
+    private fun toDomain(entity: JpaStoreroomProduct) =
+            Product(ProductId(entity.id.toString()), Stock(entity.stock))
 }

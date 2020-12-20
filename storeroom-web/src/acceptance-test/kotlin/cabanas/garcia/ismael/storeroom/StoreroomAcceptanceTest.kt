@@ -7,7 +7,6 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.test.jdbc.JdbcTestUtils
-import java.util.UUID
 
 class StoreroomAcceptanceTest : AcceptanceTest() {
 
@@ -104,14 +103,5 @@ class StoreroomAcceptanceTest : AcceptanceTest() {
                                 + " AND NAME = '" + expected.name + "'"
                 )
         ).isEqualTo(1)
-    }
-
-    companion object {
-        private val SOME_STOREROOM_REQUEST_ID = UUID.randomUUID().toString()
-        private const val SOME_STOREROOM_REQUEST_NAME = "some storeroom request name"
-
-        private val SOME_PRODUCT_REQUEST_ID = UUID.randomUUID().toString()
-
-        private val SOME_STOREROOM_USER_ID = UUID.randomUUID().toString()
     }
 }

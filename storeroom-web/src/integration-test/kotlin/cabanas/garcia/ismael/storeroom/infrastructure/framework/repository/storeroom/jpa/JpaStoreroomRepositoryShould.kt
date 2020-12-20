@@ -26,7 +26,10 @@ internal class JpaStoreroomRepositoryShould : IntegrationTest() {
     private lateinit var jdbcTemplate: JdbcTemplate
 
     @BeforeEach
-    @Sql(executionPhase = ExecutionPhase.AFTER_TEST_METHOD, statements = ["DELETE FROM STOREROOM"])
+    @Sql(
+            executionPhase = ExecutionPhase.AFTER_TEST_METHOD,
+            statements = ["DELETE FROM STOREROOM", "DELETE FROM STOREROOM_PRODUCT"]
+    )
     internal fun `configure system under test`() {
 
     }
@@ -39,7 +42,27 @@ internal class JpaStoreroomRepositoryShould : IntegrationTest() {
         assertThatStoreroomWasSaved(aStoreroom)
     }
 
+    @Test
+    @Sql(
+            statements = [
+                "INSERT INTO STOREROOM(ID, NAME, OWNER_ID) VALUES ('$SOME_STOREROOM_ID', '$SOME_NAME', '$SOME_OWNER_ID')",
+                "INSERT INTO STOREROOM_PRODUCT(ID, STOREROOM_ID, STOCK) VALUES ('$SOME_PRODUCT_ID', '$SOME_STOREROOM_ID', '$SOME_STOCK')"
+            ]
+    )
+    fun `find a storeroom from database`() {
+        val storeroom = repository.findById(SOME_STOREROOM_ID)!!
+
+        assertThat(storeroom.name).isEqualTo(SOME_NAME)
+        assertThat(storeroom.products()).isNotEmpty
+    }
+
     private companion object {
+        private const val SOME_STOREROOM_ID = "a8ef97c6-2bdc-4867-b527-9ba3a1d02f80"
+        private const val SOME_NAME = "some storeroom name"
+        private const val SOME_OWNER_ID = "028f5812-3a79-45a8-b534-f1b7540a9092"
+        private const val SOME_PRODUCT_ID = "1f87d7a9-9968-4ccb-8810-cf86566f6467"
+        private const val SOME_STOCK = 10
+
         @JvmStatic
         fun storerooms() = Stream.of(
                 Arguments.of(StoreroomMother.emptyStoreroom()),
