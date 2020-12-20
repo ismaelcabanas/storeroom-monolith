@@ -56,7 +56,7 @@ internal class JpaStoreroomRepositoryShould : IntegrationTest() {
         assertThat(storeroom.products()).isNotEmpty
     }
 
-    private companion object {
+    companion object {
         private const val SOME_STOREROOM_ID = "a8ef97c6-2bdc-4867-b527-9ba3a1d02f80"
         private const val SOME_NAME = "some storeroom name"
         private const val SOME_OWNER_ID = "028f5812-3a79-45a8-b534-f1b7540a9092"
