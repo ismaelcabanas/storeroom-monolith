@@ -1,6 +1,6 @@
 package cabanas.garcia.ismael.storeroom
 
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.StoreroomWebApplication
+import cabanas.garcia.ismael.storeroom.infrastructure.framework.Application
 import cabanas.garcia.ismael.storeroom.testcontainers.TestcontainersInitializer
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.junit.jupiter.api.BeforeEach
@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
-        classes = [StoreroomWebApplication::class]
+        classes = [Application::class]
 )
 @AutoConfigureMockMvc
 @ContextConfiguration(initializers = [TestcontainersInitializer::class])

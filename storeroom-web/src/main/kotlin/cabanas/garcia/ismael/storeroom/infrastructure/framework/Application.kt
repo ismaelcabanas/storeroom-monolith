@@ -9,10 +9,10 @@ import org.springframework.boot.runApplication
 	"cabanas.garcia.ismael.storeroom.infrastructure.framework.controller",
 	"cabanas.garcia.ismael.storeroom.infrastructure"]
 )
-class StoreroomWebApplication
+class Application
 
 fun main(args: Array<String>) {
-	runApplication<StoreroomWebApplication>(*args) {
+	runApplication<Application>(*args) {
 		setBannerMode(Banner.Mode.OFF)
 	}
 }
