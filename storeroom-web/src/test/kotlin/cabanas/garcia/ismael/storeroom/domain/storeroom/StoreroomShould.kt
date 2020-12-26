@@ -2,6 +2,7 @@ package cabanas.garcia.ismael.storeroom.domain.storeroom
 
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ConsumeProductStockExceededException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
+import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.DefaultStoreroomFactory
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.BeforeEach
@@ -15,14 +16,16 @@ private const val SOME_STOCK:Int = 3
 
 class StoreroomShould {
 
+    lateinit var factory: StoreroomFactory
+
     @BeforeEach
     fun `setUp`() {
-
+        factory = DefaultStoreroomFactory()
     }
 
     @Test
     fun `create a new storeroom for storing products`() {
-        val sut = Storeroom.create(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
+        val sut = factory.create(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
 
         assertThat(sut).isNotNull
         assertThat(sut.id.value).isEqualTo(SOME_STOREROOM_ID)

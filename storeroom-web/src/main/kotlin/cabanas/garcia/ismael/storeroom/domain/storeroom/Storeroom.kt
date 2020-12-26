@@ -15,9 +15,6 @@ class Storeroom(
 
     companion object {
         const val ZERO_STOCK: Int = 0
-
-        fun create(storeroomId: String, ownerId: String, storeroomName: String): Storeroom =
-                Storeroom(StoreroomId(storeroomId), UserId(ownerId), storeroomName)
     }
 
     fun products(): Set<Product> = products
