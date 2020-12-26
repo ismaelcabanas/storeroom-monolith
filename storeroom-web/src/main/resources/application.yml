@@ -9,9 +9,9 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: "jdbc:postgresql://localhost:5432/storeroom?currentSchema=storeroom"
-    username: "postgres"
-    password: "postgres"
+    url: "jdbc:postgresql://${database.host}:${database.port}/${database.name}?currentSchema=${database.schema}"
+    username: ${database.user}
+    password: ${database.password}
     hikari:
       maximum-pool-size: 30
       pool-name: storeroom
@@ -24,3 +24,11 @@ spring:
 
 server:
   port: 8000
+
+database:
+  host: "localhost"
+  port: 5432
+  name: "storeroom"
+  schema: "storeroom"
+  user: "postgres"
+  password: "postgres"

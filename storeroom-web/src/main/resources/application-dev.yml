@@ -1,6 +1,5 @@
 docker:
   host: "${DOCKER_IP:localhost}"
 
-spring:
-  datasource:
-    jdbcUrl: "jdbc:postgresql://localhost:5432/postgres?currentSchema=storeroom"
+database:
+  host: '${docker.host}'
