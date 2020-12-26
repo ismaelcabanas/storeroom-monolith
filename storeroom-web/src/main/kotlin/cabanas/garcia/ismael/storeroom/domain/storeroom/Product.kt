@@ -5,11 +5,11 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.NegativeStockE
 
 class Product(val id: ProductId, val stock: Stock) {
 
-    fun addStock(quantity: Int): Product {
+    internal fun addStock(quantity: Int): Product {
         return Product(id, stock.increase(quantity))
     }
 
-    fun consumeStock(quantity: Int): Product {
+    internal fun consumeStock(quantity: Int): Product {
         try {
             return Product(id, stock.decrease(quantity))
         } catch (e: NegativeStockException) {
@@ -17,7 +17,7 @@ class Product(val id: ProductId, val stock: Stock) {
         }
     }
 
-    fun stock(): Int {
+    internal fun stock(): Int {
         return stock.value
     }
 

@@ -25,7 +25,7 @@ class StoreroomAcceptanceTest : AcceptanceTest() {
         val storeroom = StoreroomMother.aStoreroomWithProducts()
         createStoreroom(storeroom)
 
-        replenishProductWithQuantity(storeroom, product.id.value, product.stock())
+        replenishProductWithQuantity(storeroom, product.id.value, 4)
 
         assertThatProductInStoreroomHasStock(storeroom.id.value, product.id.value, 4)
     }
@@ -35,7 +35,7 @@ class StoreroomAcceptanceTest : AcceptanceTest() {
         val product = ProductMother.aProductWithStock(9)
         val storeroom = StoreroomMother.aStoreroomWithProducts()
         createStoreroom(storeroom)
-        replenishProductWithQuantity(storeroom, product.id.value, product.stock())
+        replenishProductWithQuantity(storeroom, product.id.value, 9)
 
         consumeQuantityProduct(storeroom, product.id.value, 5)
 
