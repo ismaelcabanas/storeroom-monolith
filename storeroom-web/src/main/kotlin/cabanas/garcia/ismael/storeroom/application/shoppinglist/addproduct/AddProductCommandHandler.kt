@@ -1,16 +1,24 @@
 package cabanas.garcia.ismael.storeroom.application.shoppinglist.addproduct
 
 import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandHandler
-import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListId
-import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListRepository
+import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
+import cabanas.garcia.ismael.storeroom.domain.shoppinglist.*
+import cabanas.garcia.ismael.storeroom.domain.shoppinglist.exception.FindByStoreroomShoppingListDoesNotExist
 
 class AddProductCommandHandler(
-       private val shoppingListRepository: ShoppingListRepository): CommandHandler<AddProductCommand> {
+        private val shoppingListRepository: ShoppingListRepository,
+        private val productRepository: ProductRepository
+       ): CommandHandler<AddProductCommand> {
 
     override fun handle(command: AddProductCommand) {
-        shoppingListRepository.findBy(ShoppingListId( command.shoppingListId))?.let { shoppingList ->
-            val shoppingListUpdated = shoppingList.addProduct(command.productId, command.productName)
-            shoppingListRepository.save(shoppingListUpdated)
-        }
+        val shoppingList = shoppingListRepository.findBy(StoreroomId(command.storeroomId))
+                ?: throw FindByStoreroomShoppingListDoesNotExist(StoreroomId(command.storeroomId))
+
+        val product = productRepository.findById(command.productId)
+                ?: throw ProductDoesNotExitsException(command.productId)
+
+        val shoppingListUpdated = shoppingList.addProduct(Product(ProductId(product.id.value), product.name))
+
+        shoppingListRepository.save(shoppingListUpdated)
     }
 }

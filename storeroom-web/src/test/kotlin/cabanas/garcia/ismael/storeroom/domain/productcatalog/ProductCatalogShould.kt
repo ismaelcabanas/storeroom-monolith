@@ -6,6 +6,7 @@ import cabanas.garcia.ismael.storeroom.application.productcatalog.createproduct.
 import cabanas.garcia.ismael.storeroom.cucumber.assertions.that
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.api.CreateProduct
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.spi.stubs.InMemoryProductRepository
+import cabanas.garcia.ismael.storeroom.infrastructure.database.InMemoryDatabase
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -19,6 +20,7 @@ internal class ProductCatalogShould {
 
     @BeforeEach
     fun `setUp`() {
+        InMemoryDatabase.clean()
         productRepository = InMemoryProductRepository()
         productCreator = ProductCreator(productRepository)
     }
@@ -45,7 +47,7 @@ internal class ProductCatalogShould {
     }
 
     private fun assertThatProductIsSaved(userId: String, productId: String, productName: String) {
-        val product = productRepository.products[ProductId(productId)]
+        val product = InMemoryDatabase.productsCatalog[ProductId(productId)]
 
         assertNotNull(product, "Product should not be null")
 

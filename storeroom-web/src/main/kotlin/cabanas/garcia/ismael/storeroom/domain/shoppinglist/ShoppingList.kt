@@ -8,16 +8,11 @@ class ShoppingList(
 
     fun products() = products
 
-    fun addProduct(productId: String, name: String): ShoppingList {
-        val product = productOf(ProductId(productId))
-
-        if (product != null) {
-            throw ProductAlreadyExitsException(productId)
+    fun addProduct(product: Product): ShoppingList {
+        if (productOf(product.id) != null) {
+            throw ProductAlreadyExitsException(product.id)
         }
-
-        products = products.plus(Product(ProductId((productId)), name))
-
-        return this
+        return ShoppingList(id, storeroomId, ownerId, products.plus(product))
     }
 
     fun productBought(productId: String): Boolean {
@@ -32,11 +27,4 @@ class ShoppingList(
     }
 
     private fun productOf(productId: ProductId): Product? = products.find { product -> product.id == productId }
-
-    private fun updateProducts(product: Product): List<Product> {
-        val currentProducts = products.toMutableList()
-        currentProducts.add(product)
-
-        return currentProducts
-    }
 }

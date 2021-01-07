@@ -25,16 +25,17 @@ class ShoppingListShould {
     fun `add new product to shopping list`() {
         val sut = ShoppingList.create(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID)
 
-        val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_PRODUCT_NAME)
+        val actual = sut.addProduct(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME))
 
         assertThat(actual.productBought(SOME_PRODUCT_ID)).isFalse()
     }
 
     @Test
     fun `throws product does not exists error when adds a existent product in shopping list`() {
-        val sut = ShoppingListMother.createShoppingListWithProducts(listOf(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME)))
+        val someProduct = Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME)
+        val sut = ShoppingListMother.createShoppingListWithProducts(listOf(someProduct))
 
-        val throwable = catchThrowable { sut.addProduct(SOME_PRODUCT_ID, SOME_PRODUCT_NAME) }
+        val throwable = catchThrowable { sut.addProduct(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME)) }
 
         assertThat(throwable).isInstanceOf(ProductAlreadyExitsException::class.java)
         assertThat(throwable.message).isEqualTo("Product '$SOME_PRODUCT_ID' already exist in the shopping list")
