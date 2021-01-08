@@ -54,7 +54,7 @@ class AddProductCommandHandlerShould {
     }
 
     private fun givenThatAlreadyExistAShoppingList() {
-        InMemoryDatabase.shoppingLists[ShoppingListId(SOME_SHOPPING_LIST_ID)] = ShoppingList(ShoppingListId(SOME_SHOPPING_LIST_ID), StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID))
+        InMemoryDatabase.shoppingLists[ShoppingListId(SOME_SHOPPING_LIST_ID)] = ShoppingList(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_USER_ID)
     }
 
     private fun givenThatAlreadyExistProductsInCatalog() {

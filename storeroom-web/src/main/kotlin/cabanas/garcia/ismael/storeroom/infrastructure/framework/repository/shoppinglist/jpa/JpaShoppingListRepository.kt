@@ -41,9 +41,9 @@ class JpaShoppingListRepository(private val jpaRepository: SpringJpaShoppingList
 
     private fun toDomain(jpaEntity: JpaShoppingList): ShoppingList =
             ShoppingList(
-                    ShoppingListId(jpaEntity.id.toString()),
-                    StoreroomId(jpaEntity.storeroomId.toString()),
-                    UserId(jpaEntity.ownerId.toString()),
+                    jpaEntity.id.toString(),
+                    jpaEntity.storeroomId.toString(),
+                    jpaEntity.ownerId.toString(),
                     jpaEntity.products.map { product -> Product(ProductId(product.id.toString()), product.name) }
             )
 

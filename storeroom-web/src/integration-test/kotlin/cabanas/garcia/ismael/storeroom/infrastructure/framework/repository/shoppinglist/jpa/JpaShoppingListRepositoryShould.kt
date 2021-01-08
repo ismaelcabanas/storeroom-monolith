@@ -83,7 +83,7 @@ class JpaShoppingListRepositoryShould: IntegrationTest() {
             ]
     )
     fun `save a shopping list in database`() {
-        val shoppingList = ShoppingList(ShoppingListId(SOME_SHOPPING_LIST_ID), StoreroomId(SOME_STOREROOM_ID), UserId(SOME_OWNER_ID))
+        val shoppingList = ShoppingList(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID)
 
         repository.save(shoppingList)
 
@@ -99,7 +99,7 @@ class JpaShoppingListRepositoryShould: IntegrationTest() {
             ]
     )
     fun `save a shopping list with products in database`() {
-        val shoppingList = ShoppingList(ShoppingListId(SOME_SHOPPING_LIST_ID), StoreroomId(SOME_STOREROOM_ID), UserId(SOME_OWNER_ID))
+        val shoppingList = ShoppingList(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID)
         val shoppingListWithProducts = shoppingList.addProduct(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME))
 
         repository.save(shoppingListWithProducts)
