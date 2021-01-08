@@ -15,10 +15,8 @@ class ShoppingListShould {
     fun `create a shopping list for a storeroom`() {
         val sut = ShoppingList.create(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID)
 
-        assertThat(sut).isNotNull
-        assertThat(sut.id.value).isEqualTo(SOME_SHOPPING_LIST_ID)
-        assertThat(sut.storeroomId.value).isEqualTo(SOME_STOREROOM_ID)
-        assertThat(sut.ownerId.value).isEqualTo(SOME_OWNER_ID)
+        val expected = ShoppingList(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID)
+        assertThat(sut).isEqualTo(expected)
     }
 
     @Test
@@ -27,7 +25,8 @@ class ShoppingListShould {
 
         val actual = sut.addProduct(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME))
 
-        assertThat(actual.productBought(SOME_PRODUCT_ID)).isFalse()
+        val expected = ShoppingList(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID, listOf(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME)))
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
