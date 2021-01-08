@@ -2,6 +2,8 @@ buildscript {
 	ext {
 		postgresVersion = '42.2.18'
 		testcontainerVersion = '1.15.0'
+		cucumberVersion = '6.6.0'
+		kotestAssertionsVersion = '4.0.7'
 	}
 
 	dependencies {
@@ -28,10 +30,6 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	mavenCentral()
-}
-
-project.ext {
-	cucumberVersion = '6.6.0'
 }
 
 testSets {
@@ -70,6 +68,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.rest-assured:spring-mock-mvc:3.1.1")
 	testImplementation("com.github.javafaker:javafaker:1.0.1")
+	testImplementation("io.kotest:kotest-assertions-core:$kotestAssertionsVersion")
 
 	// Cucumber Test
 	testImplementation "io.cucumber:cucumber-java:" + cucumberVersion

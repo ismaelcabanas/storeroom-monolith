@@ -1,22 +1,16 @@
 package cabanas.garcia.ismael.storeroom.domain.shoppinglist
 
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.catchThrowable
-import org.junit.jupiter.api.BeforeEach
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 class ShoppingListShould {
-    @BeforeEach
-    fun `setUp`() {
-
-    }
-
     @Test
     fun `create a shopping list for a storeroom`() {
         val sut = ShoppingList.create(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID)
 
         val expected = ShoppingList(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID)
-        assertThat(sut).isEqualTo(expected)
+        sut shouldBe expected
     }
 
     @Test
@@ -26,7 +20,7 @@ class ShoppingListShould {
         val actual = sut.addProduct(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME))
 
         val expected = ShoppingList(SOME_SHOPPING_LIST_ID, SOME_STOREROOM_ID, SOME_OWNER_ID, listOf(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME)))
-        assertThat(actual).isEqualTo(expected)
+        actual shouldBe expected
     }
 
     @Test
@@ -34,10 +28,10 @@ class ShoppingListShould {
         val someProduct = Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME)
         val sut = ShoppingListMother.createShoppingListWithProducts(listOf(someProduct))
 
-        val throwable = catchThrowable { sut.addProduct(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME)) }
-
-        assertThat(throwable).isInstanceOf(ProductAlreadyExitsException::class.java)
-        assertThat(throwable.message).isEqualTo("Product '$SOME_PRODUCT_ID' already exist in the shopping list")
+        val exception = shouldThrow<ProductAlreadyExitsException> {
+            sut.addProduct(Product(ProductId(SOME_PRODUCT_ID), SOME_PRODUCT_NAME))
+        }
+        exception.message shouldBe "Product '$SOME_PRODUCT_ID' already exist in the shopping list"
     }
 
     companion object {
