@@ -4,7 +4,7 @@ class ShoppingList(
         id: String,
         storeroomId: String,
         ownerId: String,
-        private var products: List<Product> = listOf()) {
+        private var products: List<Product> = emptyList()) {
 
     val id: ShoppingListId = ShoppingListId(id)
     val storeroomId: StoreroomId = StoreroomId(storeroomId)
@@ -27,7 +27,7 @@ class ShoppingList(
 
     companion object {
         fun create(shoppingListId: String, storeroomId: String, ownerId: String): ShoppingList =
-                ShoppingList(shoppingListId, storeroomId, ownerId, emptyList())
+                ShoppingList(shoppingListId, storeroomId, ownerId)
     }
 
     private fun productOf(productId: ProductId): Product? = products.find { product -> product.id == productId }
