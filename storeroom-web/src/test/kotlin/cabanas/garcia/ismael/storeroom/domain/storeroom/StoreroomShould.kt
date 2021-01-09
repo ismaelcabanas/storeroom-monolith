@@ -1,10 +1,14 @@
 package cabanas.garcia.ismael.storeroom.domain.storeroom
 
+import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductAdded
+import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductConsumed
+import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ConsumeProductStockExceededException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.spi.DefaultStoreroomFactory
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.catchThrowable
+import io.kotest.assertions.asClue
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -25,73 +29,103 @@ class StoreroomShould {
 
     @Test
     fun `create a new storeroom for storing products`() {
-        val sut = factory.create(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
+        val actualStoreroom = factory.create(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
 
-        assertThat(sut).isNotNull
-        assertThat(sut.id.value).isEqualTo(SOME_STOREROOM_ID)
-        assertThat(sut.ownerId.value).isEqualTo(SOME_OWNER_ID)
-        assertThat(sut.name).isEqualTo(SOME_STOREROOM_NAME)
-        assertThat(sut.products()).isEmpty()
+        val expectedStoreroom = Storeroom(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
+        actualStoreroom shouldBe expectedStoreroom
     }
 
     @Test
     fun `add new products to storeroom`() {
-        val sut = StoreroomMother.emptyStoreroom()
+        val storeroom = StoreroomMother.emptyStoreroom(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
 
-        val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID)
+        val actualStoreroom = storeroom.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID)
 
-        assertThat(actual.stockOf(SOME_PRODUCT_ID)).isEqualTo(0)
+        val expectedStoreroom = Storeroom(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME, listOf(Product(SOME_PRODUCT_ID, 0)))
+        actualStoreroom.asClue {
+            it shouldBe expectedStoreroom
+            it.events() shouldBe listOf(ProductAdded(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_OWNER_ID, 0))
+        }
     }
 
     @Test
     fun `add new products with stock to storeroom`() {
-        val sut = StoreroomMother.emptyStoreroom()
+        val storeroom = StoreroomMother.emptyStoreroom()
 
-        val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, SOME_STOCK)
+        val actualStoreroom = storeroom.addProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, SOME_STOCK)
 
-        assertThat(actual.stockOf(SOME_PRODUCT_ID)).isEqualTo(SOME_STOCK)
+        val expectedStoreroom = Storeroom(storeroom.id.value, storeroom.ownerId.value, storeroom.name, listOf(Product(SOME_PRODUCT_ID, SOME_STOCK)))
+        actualStoreroom.asClue {
+            it shouldBe expectedStoreroom
+            it.events() shouldBe listOf(ProductAdded(SOME_PRODUCT_ID, storeroom.id.value, storeroom.ownerId.value, 3))
+        }
     }
 
     @Test
     fun `add new stock to existent products to storeroom`() {
-        val sut = StoreroomMother.aStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
+        val storeroom = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
         val newStock = 5
 
-        val actual = sut.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, newStock)
+        val actualStoreroom = storeroom.addProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, newStock)
 
-        assertThat(actual.stockOf(SOME_PRODUCT_ID)).isEqualTo(8)
+        val expectedStoreroom = Storeroom(storeroom.id.value, storeroom.ownerId.value, storeroom.name, listOf(Product(SOME_PRODUCT_ID, 8)))
+        actualStoreroom.asClue {
+            it shouldBe expectedStoreroom
+            it.events() shouldBe listOf(ProductAdded(SOME_PRODUCT_ID, storeroom.id.value, storeroom.ownerId.value, 5))
+        }
     }
 
     @Test
     fun `consume stock from existent product in storeroom`() {
-        val sut = StoreroomMother.aStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
+        val storeroom = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
         val consumedStock = 2
 
-        val actual = sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
+        val actualStoreroom = storeroom.consumeProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, consumedStock)
 
-        assertThat(actual.stockOf(SOME_PRODUCT_ID)).isEqualTo(1)
+        val expectedStoreroom = Storeroom(storeroom.id.value, storeroom.ownerId.value, storeroom.name, listOf(Product(SOME_PRODUCT_ID, 1)))
+        actualStoreroom.asClue {
+            it shouldBe expectedStoreroom
+            it.events() shouldBe listOf(ProductConsumed(SOME_PRODUCT_ID, storeroom.id.value, storeroom.ownerId.value, 2))
+        }
+    }
+
+    @Test
+    fun `product sold out when consume stock from existent product in storeroom`() {
+        val storeroom = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
+        val consumedStock = 3
+
+        val actualStoreroom = storeroom.consumeProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, consumedStock)
+
+        val expectedStoreroom = Storeroom(storeroom.id.value, storeroom.ownerId.value, storeroom.name, listOf(Product(SOME_PRODUCT_ID, 0)))
+        actualStoreroom.asClue {
+            it shouldBe expectedStoreroom
+            it.events() shouldBe listOf(
+                    ProductConsumed(SOME_PRODUCT_ID, storeroom.id.value, storeroom.ownerId.value, 3),
+                    ProductSoldOut(SOME_PRODUCT_ID, storeroom.id.value, storeroom.ownerId.value)
+            )
+        }
     }
 
     @Test
     fun `throw product does not exist error when consume stock from product that does not exist in storeroom`() {
-        val sut = StoreroomMother.emptyStoreroom()
+        val storeroom = StoreroomMother.emptyStoreroom(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
         val consumedStock = 2
 
-        val throwable = catchThrowable { sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock) }
-
-        assertThat(throwable).isInstanceOf(ProductDoesNotExitsException::class.java)
-        assertThat(throwable.message).isEqualTo("Product '$SOME_PRODUCT_ID' is not in the storeroom")
+        val exception = shouldThrow<ProductDoesNotExitsException> {
+            storeroom.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
+        }
+        exception.message shouldBe "Product '$SOME_PRODUCT_ID' is not in the storeroom"
     }
 
     @Test
     fun `throw consume product exceeded error when product stock in storeroom is less than stock to consume`() {
-        val sut = StoreroomMother.aStoreroomWithProducts(setOf(Product(ProductId(SOME_PRODUCT_ID), Stock(3))))
+        val sut = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
         val consumedStock = 4
 
-        val throwable = catchThrowable { sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock) }
-
-        assertThat(throwable).isInstanceOf(ConsumeProductStockExceededException::class.java)
-        assertThat(throwable.message).isEqualTo("Product '$SOME_PRODUCT_ID' stock is 3 and you want consume 4 units of stock")
+        val exception = shouldThrow<ConsumeProductStockExceededException> {
+            sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
+        }
+        exception.message shouldBe "Product '$SOME_PRODUCT_ID' stock is 3 and you want consume 4 units of stock"
     }
 
 

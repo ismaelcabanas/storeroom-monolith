@@ -7,34 +7,34 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.event.ProductSoldOut
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNotExitsException
 
 class Storeroom(
-        val id: StoreroomId,
-        val ownerId: UserId,
+        id: String,
+        ownerId: String,
         val name: String,
-        private var products: Set<Product> = setOf(),
-        private var events: List<DomainEvent> = listOf()) {
+        val products: List<Product> = emptyList()) {
+
+    val id = StoreroomId(id)
+    val ownerId = UserId(ownerId)
+    private var events = emptyList<DomainEvent>()
 
     companion object {
         const val ZERO_STOCK: Int = 0
     }
 
-    fun products(): Set<Product> = products
+    fun events(): List<DomainEvent> = events
 
-    fun events(): List<DomainEvent> = events.toList()
-
-    fun addProduct(productId: String, ownerId: String): Storeroom = addProduct(productId, ownerId, ZERO_STOCK)
-
-    fun addProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
+    fun addProduct(productId: String, ownerId: String, quantity: Int = ZERO_STOCK): Storeroom {
         val product = productOf(ProductId(productId))
 
-        products = if (product == null) {
-            updateProducts(Product(ProductId(productId), Stock(quantity)))
+        val newProducts = if (product == null) {
+            updateProducts(Product(productId, quantity))
         } else {
             updateProducts(product.addStock(quantity))
         }
 
-        events = events.plus(ProductAdded(productId, id.value, ownerId, quantity))
+        val newEvents = events.plus(ProductAdded(productId, id.value, ownerId, quantity))
 
-        return this
+        return Storeroom(this.id.value, this.ownerId.value, this.name, newProducts)
+                .apply { events = newEvents }
     }
 
     fun stockOf(productId: String): Int {
@@ -48,19 +48,20 @@ class Storeroom(
 
         val productConsumed = product.consumeStock(quantity)
 
-        products = updateProducts(productConsumed)
+        val newProducts = updateProducts(productConsumed)
 
-        events = events.plus(ProductConsumed(productId, id.value, ownerId, quantity))
+        var newEvents = events.plus(ProductConsumed(productId, id.value, ownerId, quantity))
 
         if (productConsumed.stock() == ZERO_STOCK) {
-            events = events.plus(ProductSoldOut(productId, id.value, ownerId))
+            newEvents = newEvents.plus(ProductSoldOut(productId, id.value, ownerId))
         }
 
-        return this
+        return Storeroom(this.id.value, this.ownerId.value, this.name, newProducts)
+                .apply { events = newEvents }
     }
 
-    private fun updateProducts(product: Product): Set<Product> {
-        val currentProducts = products.toMutableSet()
+    private fun updateProducts(product: Product): List<Product> {
+        val currentProducts = products.toMutableList()
         currentProducts.removeIf { item -> item.id == product.id }
         return currentProducts.plus(product)
     }

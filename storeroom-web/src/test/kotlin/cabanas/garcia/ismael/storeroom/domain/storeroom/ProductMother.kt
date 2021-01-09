@@ -9,6 +9,6 @@ object ProductMother {
             aProductWithStock(STOCK_10)
 
     fun aProductWithStock(stock: Int) =
-            Product(ProductId(UUID.randomUUID().toString()), Stock(stock))
+            Product(UUID.randomUUID().toString(), stock)
 
 }

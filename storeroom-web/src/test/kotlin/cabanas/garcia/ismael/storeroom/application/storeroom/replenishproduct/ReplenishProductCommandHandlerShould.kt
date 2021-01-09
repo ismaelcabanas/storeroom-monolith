@@ -60,7 +60,7 @@ class ReplenishProductCommandHandlerShould {
     }
 
     private fun givenThatAlreadyExistAStoreroom() {
-        InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_ID)] = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID), "Test Storeroom")
+        InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_ID)] = Storeroom(SOME_STOREROOM_ID, SOME_USER_ID, "Test Storeroom")
     }
 
     private fun assertThatProductWasPersistedInStoreroom() {

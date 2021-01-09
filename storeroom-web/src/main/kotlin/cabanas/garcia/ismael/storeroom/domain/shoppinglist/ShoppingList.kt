@@ -4,12 +4,11 @@ class ShoppingList(
         id: String,
         storeroomId: String,
         ownerId: String,
-        products: List<Product> = emptyList()) {
+        val products: List<Product> = emptyList()) {
 
-    val id: ShoppingListId = ShoppingListId(id)
-    val storeroomId: StoreroomId = StoreroomId(storeroomId)
-    val ownerId: UserId = UserId(ownerId)
-    val products: List<Product> = products
+    val id = ShoppingListId(id)
+    val storeroomId = StoreroomId(storeroomId)
+    val ownerId = UserId(ownerId)
 
     companion object {
         fun create(shoppingListId: String, storeroomId: String, ownerId: String): ShoppingList =

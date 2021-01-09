@@ -7,7 +7,7 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.UserId
 
 class DefaultStoreroomFactory: StoreroomFactory {
     override fun create(storeroomId: String, ownerId: String, storeroomName: String): Storeroom {
-        return Storeroom(StoreroomId(storeroomId), UserId(ownerId), storeroomName)
+        return Storeroom(storeroomId, ownerId, storeroomName)
     }
 
 }

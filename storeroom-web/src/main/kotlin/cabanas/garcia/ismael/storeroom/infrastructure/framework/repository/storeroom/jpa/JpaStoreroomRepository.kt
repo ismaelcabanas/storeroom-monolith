@@ -14,7 +14,7 @@ class JpaStoreroomRepository(
 
     override fun save(storeroom: Storeroom) {
         storeroomJpaRepository.save(toEntity(storeroom))
-        storeroom.products().forEach { productJpaRepository.save(toEntity(storeroom.id, it)) }
+        storeroom.products.forEach { productJpaRepository.save(toEntity(storeroom.id, it)) }
     }
 
     private fun toEntity(storeroomId: StoreroomId, domain: Product) =
@@ -29,14 +29,14 @@ class JpaStoreroomRepository(
 
     private fun toDomain(entity: JpaStoreroom, productsEntity: List<JpaStoreroomProduct>): Storeroom? =
             Storeroom(
-                    StoreroomId(entity.id.toString()),
-                    UserId(entity.ownerId.toString()),
+                    entity.id.toString(),
+                    entity.ownerId.toString(),
                     entity.name,
                     productsEntity
                             .map { toDomain(it) }
-                            .toSet()
+                            .toList()
             )
 
     private fun toDomain(entity: JpaStoreroomProduct) =
-            Product(ProductId(entity.id.toString()), Stock(entity.stock))
+            Product(entity.id.toString(), entity.stock)
 }

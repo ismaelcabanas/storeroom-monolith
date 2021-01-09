@@ -53,7 +53,7 @@ internal class JpaStoreroomRepositoryShould : IntegrationTest() {
         val storeroom = repository.findBy(StoreroomId(SOME_STOREROOM_ID))!!
 
         assertThat(storeroom.name).isEqualTo(SOME_NAME)
-        assertThat(storeroom.products()).isNotEmpty
+        assertThat(storeroom.products).isNotEmpty
     }
 
     companion object {
@@ -81,8 +81,8 @@ internal class JpaStoreroomRepositoryShould : IntegrationTest() {
                 )
         ).isEqualTo(1)
 
-        if (expected.products().isNotEmpty()) {
-            expected.products().forEach {
+        if (expected.products.isNotEmpty()) {
+            expected.products.forEach {
                 assertThat(
                         countRowsInTableWhere(
                                 jdbcTemplate,

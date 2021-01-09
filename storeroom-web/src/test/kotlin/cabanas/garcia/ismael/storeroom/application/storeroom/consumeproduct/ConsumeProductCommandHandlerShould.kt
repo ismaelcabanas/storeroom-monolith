@@ -73,8 +73,8 @@ class ConsumeProductCommandHandlerShould {
     }
 
     private fun givenThatAlreadyExistAStoreroomWithProduct() {
-        InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_ID)] = Storeroom(StoreroomId(SOME_STOREROOM_ID), UserId(SOME_USER_ID), "Test Storeroom")
-        InMemoryDatabase.products[ProductId(SOME_PRODUCT_ID)] = Product(ProductId(SOME_PRODUCT_ID), Stock(SOME_QUANTITY))
+        InMemoryDatabase.storerooms[StoreroomId(SOME_STOREROOM_ID)] = Storeroom(SOME_STOREROOM_ID, SOME_USER_ID, "Test Storeroom")
+        InMemoryDatabase.products[ProductId(SOME_PRODUCT_ID)] = Product(SOME_PRODUCT_ID, SOME_QUANTITY)
     }
 
     private fun assertThatProductWasPersistedInStoreroom() {

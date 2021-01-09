@@ -3,15 +3,18 @@ package cabanas.garcia.ismael.storeroom.domain.storeroom
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ConsumeProductStockExceededException
 import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.NegativeStockException
 
-class Product(val id: ProductId, val stock: Stock) {
+class Product(id: String, stock: Int) {
+
+    val id: ProductId = ProductId(id)
+    val stock: Stock = Stock(stock)
 
     internal fun addStock(quantity: Int): Product {
-        return Product(id, stock.increase(quantity))
+        return Product(id.value, stock.increase(quantity).value)
     }
 
     internal fun consumeStock(quantity: Int): Product {
         try {
-            return Product(id, stock.decrease(quantity))
+            return Product(id.value, stock.decrease(quantity).value)
         } catch (e: NegativeStockException) {
             throw ConsumeProductStockExceededException(id.value, stock(), quantity, e)
         }

@@ -3,18 +3,21 @@ package cabanas.garcia.ismael.storeroom.domain.storeroom
 import java.util.UUID
 
 object StoreroomMother {
-    fun aStoreroomWithProducts(products: Set<Product>) =
-        Storeroom(StoreroomId(
-                UUID.randomUUID().toString()),
-                UserId(UUID.randomUUID().toString()),
+    fun aStoreroomWithProducts(products: List<Product>) =
+        Storeroom(
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
                 ProductNameMother.random(),
                 products
         )
 
     fun aStoreroomWithProducts() =
-        aStoreroomWithProducts(setOf(ProductMother.aProduct()))
+        aStoreroomWithProducts(listOf(ProductMother.aProduct()))
 
-    fun emptyStoreroom() =
-        aStoreroomWithProducts(emptySet())
+    fun emptyStoreroom(
+            storeroomId: String = UUID.randomUUID().toString(),
+            ownerId: String = UUID.randomUUID().toString(),
+            storeroomName: String = ProductNameMother.random()) =
+        Storeroom(storeroomId, ownerId, storeroomName)
 
 }
