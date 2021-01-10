@@ -10,7 +10,7 @@ class Storeroom(
         id: String,
         ownerId: String,
         val name: String,
-        val products: List<Product> = emptyList()) {
+        private val products: List<Product> = emptyList()) {
 
     val id = StoreroomId(id)
     val ownerId = UserId(ownerId)
@@ -19,6 +19,8 @@ class Storeroom(
     companion object {
         const val ZERO_STOCK: Int = 0
     }
+
+    fun products() = products.toList()
 
     fun events(): List<DomainEvent> = events
 

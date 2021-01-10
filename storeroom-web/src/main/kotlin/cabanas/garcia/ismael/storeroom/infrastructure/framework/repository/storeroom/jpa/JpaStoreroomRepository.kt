@@ -14,7 +14,7 @@ class JpaStoreroomRepository(
 
     override fun save(storeroom: Storeroom) {
         storeroomJpaRepository.save(toEntity(storeroom))
-        storeroom.products.forEach { productJpaRepository.save(toEntity(storeroom.id, it)) }
+        storeroom.products().forEach { productJpaRepository.save(toEntity(storeroom.id, it)) }
     }
 
     private fun toEntity(storeroomId: StoreroomId, domain: Product) =

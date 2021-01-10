@@ -18,7 +18,7 @@ class InMemoryStoreroomRepository: StoreroomRepository {
 
     override fun save(storeroom: Storeroom) {
         InMemoryDatabase.storerooms[storeroom.id] = storeroom
-        storeroom.products.stream().forEach { product -> InMemoryDatabase.products[product.id] = product }
+        storeroom.products().stream().forEach { product -> InMemoryDatabase.products[product.id] = product }
     }
 
     fun clean() {
