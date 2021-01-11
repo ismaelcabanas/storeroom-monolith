@@ -36,6 +36,11 @@ internal class JpaStoreroomRepositoryShould : IntegrationTest() {
 
     @ParameterizedTest(name = "Given storeroom \"{0}\", when save it, then is persisted on DB")
     @MethodSource("storerooms")
+    @Sql(
+            statements = [
+                "DELETE FROM STOREROOM"
+            ]
+    )
     fun `save a storeroom on database`(aStoreroom: Storeroom) {
         repository.save(aStoreroom)
 

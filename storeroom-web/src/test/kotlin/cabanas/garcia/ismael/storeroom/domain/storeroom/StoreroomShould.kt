@@ -37,14 +37,14 @@ class StoreroomShould {
 
     @Test
     fun `add new products to storeroom`() {
-        val storeroom = StoreroomMother.emptyStoreroom(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
+        val storeroom = StoreroomMother.emptyStoreroom()
 
-        val actualStoreroom = storeroom.addProduct(SOME_PRODUCT_ID, SOME_OWNER_ID)
+        val actualStoreroom = storeroom.addProduct(SOME_PRODUCT_ID, storeroom.ownerId.value)
 
-        val expectedStoreroom = Storeroom(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME, listOf(Product(SOME_PRODUCT_ID, 0)))
+        val expectedStoreroom = Storeroom(storeroom.id.value, storeroom.ownerId.value, storeroom.name, listOf(Product(SOME_PRODUCT_ID, 0)))
         actualStoreroom.asClue {
             it shouldBe expectedStoreroom
-            it.events() shouldBe listOf(ProductAdded(SOME_PRODUCT_ID, SOME_STOREROOM_ID, SOME_OWNER_ID, 0))
+            it.events() shouldBe listOf(ProductAdded(SOME_PRODUCT_ID, storeroom.id.value, storeroom.ownerId.value, 0))
         }
     }
 
@@ -63,7 +63,7 @@ class StoreroomShould {
 
     @Test
     fun `add new stock to existent products to storeroom`() {
-        val storeroom = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
+        val storeroom = StoreroomMother.aStoreroomWithProducts(products = listOf(Product(SOME_PRODUCT_ID, 3)))
         val newStock = 5
 
         val actualStoreroom = storeroom.addProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, newStock)
@@ -77,7 +77,7 @@ class StoreroomShould {
 
     @Test
     fun `consume stock from existent product in storeroom`() {
-        val storeroom = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
+        val storeroom = StoreroomMother.aStoreroomWithProducts(products = listOf(Product(SOME_PRODUCT_ID, 3)))
         val consumedStock = 2
 
         val actualStoreroom = storeroom.consumeProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, consumedStock)
@@ -91,7 +91,7 @@ class StoreroomShould {
 
     @Test
     fun `product sold out when consume stock from existent product in storeroom`() {
-        val storeroom = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
+        val storeroom = StoreroomMother.aStoreroomWithProducts(products = listOf(Product(SOME_PRODUCT_ID, 3)))
         val consumedStock = 3
 
         val actualStoreroom = storeroom.consumeProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, consumedStock)
@@ -108,22 +108,22 @@ class StoreroomShould {
 
     @Test
     fun `throw product does not exist error when consume stock from product that does not exist in storeroom`() {
-        val storeroom = StoreroomMother.emptyStoreroom(SOME_STOREROOM_ID, SOME_OWNER_ID, SOME_STOREROOM_NAME)
+        val storeroom = StoreroomMother.emptyStoreroom()
         val consumedStock = 2
 
         val exception = shouldThrow<ProductDoesNotExitsException> {
-            storeroom.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
+            storeroom.consumeProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, consumedStock)
         }
         exception.message shouldBe "Product '$SOME_PRODUCT_ID' is not in the storeroom"
     }
 
     @Test
     fun `throw consume product exceeded error when product stock in storeroom is less than stock to consume`() {
-        val sut = StoreroomMother.aStoreroomWithProducts(listOf(Product(SOME_PRODUCT_ID, 3)))
+        val storeroom = StoreroomMother.aStoreroomWithProducts(products = listOf(Product(SOME_PRODUCT_ID, 3)))
         val consumedStock = 4
 
         val exception = shouldThrow<ConsumeProductStockExceededException> {
-            sut.consumeProduct(SOME_PRODUCT_ID, SOME_OWNER_ID, consumedStock)
+            storeroom.consumeProduct(SOME_PRODUCT_ID, storeroom.ownerId.value, consumedStock)
         }
         exception.message shouldBe "Product '$SOME_PRODUCT_ID' stock is 3 and you want consume 4 units of stock"
     }

@@ -12,7 +12,7 @@ class StoreroomAcceptanceTest : AcceptanceTest() {
 
     @Test
     fun `create storeroom successfully`() {
-        val storeroom = StoreroomMother.emptyStoreroom()
+        val storeroom = StoreroomMother.emptyStoreroom(storeroomName = "some storeroom name")
 
         createStoreroom(storeroom)
 
@@ -22,7 +22,7 @@ class StoreroomAcceptanceTest : AcceptanceTest() {
     @Test
     fun `replenish products to storeroom successfully`() {
         val product = ProductMother.aProductWithStock(4)
-        val storeroom = StoreroomMother.aStoreroomWithProducts()
+        val storeroom = StoreroomMother.aStoreroomWithProducts(storeroomName = "some storeroom for replenish")
         createStoreroom(storeroom)
 
         replenishProductWithQuantity(storeroom, product.id.value, 4)
@@ -33,7 +33,7 @@ class StoreroomAcceptanceTest : AcceptanceTest() {
     @Test
     fun `consume products from storeroom successfully`() {
         val product = ProductMother.aProductWithStock(9)
-        val storeroom = StoreroomMother.aStoreroomWithProducts()
+        val storeroom = StoreroomMother.aStoreroomWithProducts(storeroomName = "some storeroom for consume")
         createStoreroom(storeroom)
         replenishProductWithQuantity(storeroom, product.id.value, 9)
 
