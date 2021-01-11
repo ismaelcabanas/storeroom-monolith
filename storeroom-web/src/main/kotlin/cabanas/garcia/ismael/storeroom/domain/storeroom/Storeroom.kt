@@ -9,12 +9,20 @@ import cabanas.garcia.ismael.storeroom.domain.storeroom.exception.ProductDoesNot
 class Storeroom(
         id: String,
         ownerId: String,
-        val name: String,
-        private val products: List<Product> = emptyList()) {
+        val name: String) {
+
+    constructor(id: String,
+                ownerId: String,
+                name: String,
+                products: List<Product>
+    ) : this(id, ownerId, name) {
+        this.products.addAll(products)
+    }
 
     val id = StoreroomId(id)
     val ownerId = UserId(ownerId)
-    private var events = emptyList<DomainEvent>()
+    private var products = mutableListOf<Product>()
+    private var events = mutableListOf<DomainEvent>()
 
     companion object {
         const val ZERO_STOCK: Int = 0
@@ -22,21 +30,14 @@ class Storeroom(
 
     fun products() = products.toList()
 
-    fun events(): List<DomainEvent> = events
+    fun events() = events.toList()
 
     fun addProduct(productId: String, ownerId: String, quantity: Int = ZERO_STOCK): Storeroom {
-        val product = productOf(ProductId(productId))
-
-        val newProducts = if (product == null) {
-            updateProducts(Product(productId, quantity))
-        } else {
-            updateProducts(product.addStock(quantity))
+        if (productDoesNotExist(productId)) {
+            return addNewProduct(productId, ownerId, quantity)
         }
 
-        val newEvents = events.plus(ProductAdded(productId, id.value, ownerId, quantity))
-
-        return Storeroom(this.id.value, this.ownerId.value, this.name, newProducts)
-                .apply { events = newEvents }
+        return addProductStock(productId, ownerId, quantity)
     }
 
     fun stockOf(productId: String): Int {
@@ -46,26 +47,51 @@ class Storeroom(
     }
 
     fun consumeProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
-        val product = productOf(ProductId(productId)) ?: throw ProductDoesNotExitsException(productId)
-
-        val productConsumed = product.consumeStock(quantity)
-
-        val newProducts = updateProducts(productConsumed)
-
-        var newEvents = events.plus(ProductConsumed(productId, id.value, ownerId, quantity))
-
-        if (productConsumed.stock() == ZERO_STOCK) {
-            newEvents = newEvents.plus(ProductSoldOut(productId, id.value, ownerId))
+        if (productDoesNotExist(productId)) {
+            throw ProductDoesNotExitsException(productId)
         }
 
-        return Storeroom(this.id.value, this.ownerId.value, this.name, newProducts)
-                .apply { events = newEvents }
+        return consumeProductStock(productId, ownerId, quantity)
     }
 
-    private fun updateProducts(product: Product): List<Product> {
-        val currentProducts = products.toMutableList()
-        currentProducts.removeIf { item -> item.id == product.id }
-        return currentProducts.plus(product)
+    private fun productDoesNotExist(productId: String): Boolean =
+            !products.any { it.id.value == productId }
+
+    private fun addNewProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
+        products.add(Product(productId, quantity))
+        registerEvent(ProductAdded(productId, this.id.value, this.ownerId.value, quantity))
+        return this
+    }
+
+    private fun addProductStock(productId: String, ownerId: String, quantity: Int): Storeroom {
+        val product = findProduct(productId)
+
+        products[products.indexOf(products.find { it.id.value == productId })] = product.addStock(quantity)
+
+        registerEvent(ProductAdded(productId, this.id.value, this.ownerId.value, quantity))
+
+        return this
+    }
+
+    private fun consumeProductStock(productId: String, ownerId: String, quantity: Int): Storeroom {
+        val product = findProduct(productId)
+
+        products[products.indexOf(products.find { it.id.value == productId })] = product.consumeStock(quantity)
+
+        registerEvent(ProductConsumed(productId, this.id.value, this.ownerId.value, quantity))
+
+        if (stockOf(productId) == ZERO_STOCK) {
+            registerEvent(ProductSoldOut(productId, id.value, this.ownerId.value))
+        }
+
+        return this
+    }
+
+    private fun findProduct(productId: String): Product =
+            products.find { it.id.value == productId }!!
+
+    private fun registerEvent(domainEvent: DomainEvent) {
+        this.events.add(domainEvent)
     }
 
     private fun productOf(productId: ProductId): Product? = products.find { product -> product.id == productId }
