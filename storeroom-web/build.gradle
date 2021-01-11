@@ -106,11 +106,15 @@ acceptanceTest {
 	useJUnitPlatform()
 }
 
+check.dependsOn jacocoTestReport
+
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
+check.dependsOn jacocoIntegrationTestReport
 
 check.dependsOn acceptanceTest
 acceptanceTest.mustRunAfter integrationTest
+check.dependsOn jacocoAcceptanceTestReport
 
 compileKotlin {
 	kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
