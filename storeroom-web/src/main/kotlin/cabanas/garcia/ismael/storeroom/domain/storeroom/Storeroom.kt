@@ -38,7 +38,7 @@ class Storeroom(
         } ?: addNewProduct(productId, ownerId, quantity)
 
     fun stockOf(productId: String): Int {
-        val product = productOf(ProductId(productId))
+        val product = findProduct(productId)
 
         return product?.stock() ?: ZERO_STOCK
     }
@@ -84,8 +84,6 @@ class Storeroom(
     private fun registerEvent(domainEvent: DomainEvent) {
         this.events.add(domainEvent)
     }
-
-    private fun productOf(productId: ProductId): Product? = products.find { product -> product.id == productId }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
