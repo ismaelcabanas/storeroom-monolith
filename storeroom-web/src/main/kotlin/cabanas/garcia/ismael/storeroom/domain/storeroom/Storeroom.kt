@@ -32,13 +32,10 @@ class Storeroom(
 
     fun events() = events.toList()
 
-    fun addProduct(productId: String, ownerId: String, quantity: Int = ZERO_STOCK): Storeroom {
-        if (productDoesNotExist(productId)) {
-            return addNewProduct(productId, ownerId, quantity)
-        }
-
-        return addProductStock(productId, ownerId, quantity)
-    }
+    fun addProduct(productId: String, ownerId: String, quantity: Int = ZERO_STOCK): Storeroom =
+        findProduct(productId)?.let { product ->
+            addProductStock(product, quantity)
+        } ?: addNewProduct(productId, ownerId, quantity)
 
     fun stockOf(productId: String): Int {
         val product = productOf(ProductId(productId))
@@ -46,16 +43,10 @@ class Storeroom(
         return product?.stock() ?: ZERO_STOCK
     }
 
-    fun consumeProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
-        if (productDoesNotExist(productId)) {
-            throw ProductDoesNotExitsException(productId)
-        }
-
-        return consumeProductStock(productId, ownerId, quantity)
-    }
-
-    private fun productDoesNotExist(productId: String): Boolean =
-            !products.any { it.id.value == productId }
+    fun consumeProduct(productId: String, ownerId: String, quantity: Int): Storeroom =
+            findProduct(productId)?.let { product ->
+                consumeProductStock(product, quantity)
+            } ?: throw ProductDoesNotExitsException(productId)
 
     private fun addNewProduct(productId: String, ownerId: String, quantity: Int): Storeroom {
         products.add(Product(productId, quantity))
@@ -63,32 +54,32 @@ class Storeroom(
         return this
     }
 
-    private fun addProductStock(productId: String, ownerId: String, quantity: Int): Storeroom {
-        val product = findProduct(productId)
+    private fun addProductStock(product: Product, quantity: Int): Storeroom {
+        replaceProduct(product.addStock(quantity))
 
-        products[products.indexOf(products.find { it.id.value == productId })] = product.addStock(quantity)
-
-        registerEvent(ProductAdded(productId, this.id.value, this.ownerId.value, quantity))
+        registerEvent(ProductAdded(product.id.value, this.id.value, this.ownerId.value, quantity))
 
         return this
     }
 
-    private fun consumeProductStock(productId: String, ownerId: String, quantity: Int): Storeroom {
-        val product = findProduct(productId)
+    private fun consumeProductStock(product: Product, quantity: Int): Storeroom {
+        replaceProduct(product.consumeStock(quantity))
 
-        products[products.indexOf(products.find { it.id.value == productId })] = product.consumeStock(quantity)
+        registerEvent(ProductConsumed(product.id.value, this.id.value, this.ownerId.value, quantity))
 
-        registerEvent(ProductConsumed(productId, this.id.value, this.ownerId.value, quantity))
-
-        if (stockOf(productId) == ZERO_STOCK) {
-            registerEvent(ProductSoldOut(productId, id.value, this.ownerId.value))
+        if (stockOf(product.id.value) == ZERO_STOCK) {
+            registerEvent(ProductSoldOut(product.id.value, id.value, this.ownerId.value))
         }
 
         return this
     }
 
-    private fun findProduct(productId: String): Product =
-            products.find { it.id.value == productId }!!
+    private fun replaceProduct(product: Product) {
+        products[products.indexOf(products.find { it.id.value == product.id.value })] = product
+    }
+
+    private fun findProduct(productId: String): Product? =
+            products.find { it.id.value == productId }
 
     private fun registerEvent(domainEvent: DomainEvent) {
         this.events.add(domainEvent)
