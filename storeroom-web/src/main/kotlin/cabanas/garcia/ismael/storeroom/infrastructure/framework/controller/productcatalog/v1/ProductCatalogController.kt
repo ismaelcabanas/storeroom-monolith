@@ -1,10 +1,10 @@
-package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.v1
+package cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.productcatalog.v1
 
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.api.CreateProduct
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductDetails
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductId
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.UserId
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.controller.v1.request.CreateProductRequest
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.http.ResponseEntity
 
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
@@ -30,3 +30,8 @@ class ProductCatalogController(private val createProduct: CreateProduct) {
         return ResponseEntity.created(location).contentType(MediaType.APPLICATION_JSON).build()
     }
 }
+
+data class CreateProductRequest (
+    @JsonProperty("productId") val productId: String,
+    @JsonProperty("productName") val productName: String
+)
