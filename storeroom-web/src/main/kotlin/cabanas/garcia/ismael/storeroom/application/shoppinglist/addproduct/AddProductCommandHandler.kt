@@ -4,6 +4,9 @@ import cabanas.garcia.ismael.storeroom.application.shared.bus.command.CommandHan
 import cabanas.garcia.ismael.storeroom.domain.productcatalog.ProductRepository
 import cabanas.garcia.ismael.storeroom.domain.shoppinglist.*
 import cabanas.garcia.ismael.storeroom.domain.shoppinglist.exception.FindByStoreroomShoppingListDoesNotExist
+import mu.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
 
 class AddProductCommandHandler(
         private val shoppingListRepository: ShoppingListRepository,
@@ -20,5 +23,7 @@ class AddProductCommandHandler(
         val shoppingListUpdated = shoppingList.addProduct(Product(ProductId(product.id.value), product.name))
 
         shoppingListRepository.save(shoppingListUpdated)
+
+        logger.info("Add product '${product.name}' to shopping list '${shoppingList.id}'")
     }
 }
