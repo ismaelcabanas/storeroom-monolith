@@ -63,7 +63,7 @@ class Storeroom(
     }
 
     private fun consumeProductStock(product: Product, quantity: Int): Storeroom {
-        replaceProduct(product.consumeStock(quantity))
+        replaceProduct(product.removeStock(quantity))
 
         registerEvent(ProductConsumed(product.id.value, this.id.value, this.ownerId.value, quantity))
 

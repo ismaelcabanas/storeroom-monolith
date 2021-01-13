@@ -12,7 +12,7 @@ class Product(id: String, stock: Int) {
         return Product(id.value, stock.increase(quantity).value)
     }
 
-    internal fun consumeStock(quantity: Int): Product {
+    internal fun removeStock(quantity: Int): Product {
         try {
             return Product(id.value, stock.decrease(quantity).value)
         } catch (e: NegativeStockException) {
