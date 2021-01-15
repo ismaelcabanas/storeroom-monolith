@@ -6,6 +6,8 @@ spring:
     banner-mode: "OFF"
   output:
     ansi.enabled: always
+  profiles:
+    active: dev
   datasource:
     driver-class-name: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource
@@ -26,9 +28,6 @@ server:
   port: 8000
 
 database:
-  host: "localhost"
   port: 5432
   name: "storeroom"
   schema: "storeroom"
-  user: "postgres"
-  password: "postgres"

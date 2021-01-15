@@ -5,7 +5,6 @@ import cabanas.garcia.ismael.storeroom.domain.shoppinglist.ShoppingListRepositor
 import cabanas.garcia.ismael.storeroom.domain.storeroom.StoreroomRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.productcatalog.jpa.JpaProductRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.productcatalog.jpa.SpringJpaProductRepository
-import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.shoppinglist.InMemoryShoppingListRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.shoppinglist.jpa.JpaShoppingListRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.shoppinglist.jpa.SpringJpaShoppingListRepository
 import cabanas.garcia.ismael.storeroom.infrastructure.framework.repository.storeroom.jpa.JpaStoreroomRepository
@@ -17,9 +16,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class RepositoryConfiguration {
-    @Bean
-    fun shoppingListRepository() : ShoppingListRepository = InMemoryShoppingListRepository()
-
     @Bean
     fun jpaProductCatalogRepository(springJpaRepository: SpringJpaProductRepository) : ProductRepository =
             JpaProductRepository(springJpaRepository)

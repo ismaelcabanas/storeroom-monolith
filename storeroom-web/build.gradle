@@ -51,6 +51,7 @@ dependencies {
 
 	// Database
 	runtimeOnly("org.postgresql:postgresql:${postgresVersion}")
+	runtimeOnly("com.h2database:h2")
 	implementation("org.flywaydb:flyway-core:6.5.7")
 
 	// Kotlin
@@ -138,3 +139,5 @@ compileAcceptanceTestKotlin {
 jacocoTestReport {
 	dependsOn test
 }
+
+bootRun.systemProperties = System.properties

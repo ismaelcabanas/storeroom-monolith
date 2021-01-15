@@ -3,3 +3,5 @@ docker:
 
 database:
   host: '${docker.host}'
+  user: "postgres"
+  password: "postgres"
