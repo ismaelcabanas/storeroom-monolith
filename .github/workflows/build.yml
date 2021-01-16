@@ -24,6 +24,7 @@ jobs:
       run: chmod +x gradlew
     - name: Build storeroom-webapi with Gradle
       run: ./gradlew build --stacktrace
+
     - name: Login to DockerHub Registry
       run: echo '${{ secrets.DOCKER_HUB_PASS }}' | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
     - name: Build the Docker image storeroom-webapi

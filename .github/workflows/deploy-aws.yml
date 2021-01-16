@@ -82,5 +82,5 @@ jobs:
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: storeroom-service
-        cluster: ec2-new-cluster
+        cluster: storeroom
         wait-for-service-stability: true
