@@ -138,6 +138,26 @@ compileAcceptanceTestKotlin {
 
 jacocoTestReport {
 	dependsOn test
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
+}
+
+jacocoIntegrationTestReport {
+	dependsOn test
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
+}
+
+jacocoAcceptanceTestReport {
+	dependsOn test
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
 }
 
 bootRun.systemProperties = System.properties
