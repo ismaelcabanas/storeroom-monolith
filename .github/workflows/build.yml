@@ -37,5 +37,3 @@ jobs:
         fail_ci_if_error: true
         # Specify whether the Codecov output should be verbose
         verbose: true
-        # Directory in which to execute codecov.sh
-        working-directory: storeroom-web/
